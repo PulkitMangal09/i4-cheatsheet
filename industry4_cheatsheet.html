@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industry 4.0 Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --paper: #f5f0e8;
+  --ink: #1a1612;
+  --rust: #c0392b;
+  --teal: #1a7a6e;
+  --gold: #b8860b;
+  --blue: #1e3a5f;
+  --mid: #6b6560;
+  --light: #e8e3d8;
+  --rule: #c8c0b0;
+}
+body { background: var(--paper); color: var(--ink); font-family: 'Fraunces', Georgia, serif; font-size: 14px; line-height: 1.6; }
+.page { max-width: 900px; margin: 0 auto; padding: 48px 40px 80px; }
+
+.header { border-top: 4px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 20px 0 16px; margin-bottom: 36px; display: flex; justify-content: space-between; align-items: flex-end; }
+.header h1 { font-size: 2.8rem; font-weight: 900; line-height: 1; letter-spacing: -1px; }
+.header .sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--mid); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+.header-right { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--mid); text-align: right; line-height: 1.8; }
+
+.section { margin-bottom: 40px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+.section-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; background: var(--ink); color: var(--paper); padding: 2px 7px; letter-spacing: 1px; }
+.section-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.3px; }
+
+.def-block { display: grid; grid-template-columns: 180px 1fr; margin-bottom: 1px; border-bottom: 1px solid var(--light); }
+.def-block:last-child { border-bottom: none; }
+.def-term { font-weight: 700; font-size: 0.88rem; padding: 9px 14px 9px 0; border-right: 1px solid var(--rule); color: var(--blue); line-height: 1.4; }
+.def-term small { display:block; font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 400; color: var(--mid); }
+.def-body { padding: 9px 0 9px 14px; font-size: 0.85rem; color: #2e2a26; line-height: 1.55; }
+.def-body em { color: var(--rust); font-style: normal; font-weight: 600; }
+.tag { font-family: 'IBM Plex Mono', monospace; font-size: 9px; background: var(--light); border: 1px solid var(--rule); padding: 1px 5px; color: var(--mid); margin-left: 4px; }
+
+.comp-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 12px; }
+.comp-table th { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 10px; background: var(--ink); color: var(--paper); text-align: left; font-weight: 400; }
+.comp-table td { padding: 8px 10px; border-bottom: 1px solid var(--light); vertical-align: top; line-height: 1.4; color: #2e2a26; }
+.comp-table tr:last-child td { border-bottom: none; }
+.highlight { font-weight: 700; color: var(--blue); }
+.good { color: var(--teal); font-weight: 600; }
+.bad { color: var(--rust); font-weight: 600; }
+.mid-val { color: var(--gold); font-weight: 600; }
+
+.callout { border-left: 3px solid var(--rust); padding: 10px 14px; background: rgba(192,57,43,0.05); margin: 12px 0; font-size: 0.83rem; line-height: 1.55; }
+.callout strong { color: var(--rust); }
+
+.formula-section { background: var(--ink); color: var(--paper); padding: 20px 22px; margin-top: 12px; }
+.formula-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #a09880; text-transform: uppercase; }
+.formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 14px; }
+.formula-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; color: #a09880; text-transform: uppercase; margin-bottom: 6px; }
+.formula-expr { font-family: 'IBM Plex Mono', monospace; font-size: 1rem; color: #f0e8d0; font-weight: 600; line-height: 1.5; }
+.formula-note { font-size: 0.75rem; color: #a09880; margin-top: 4px; font-family: 'IBM Plex Mono', monospace; line-height: 1.4; }
+
+.example-box { border: 1px solid var(--rule); padding: 14px 16px; margin-top: 10px; background: white; }
+.example-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; margin-bottom: 8px; }
+.example-steps { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: #2e2a26; line-height: 2; }
+.example-steps .ans { color: var(--teal); font-weight: 600; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.note-strip { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--mid); letter-spacing: 1px; padding: 6px 0; border-top: 1px solid var(--rule); margin-top: 10px; }
+
+@keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.section { animation: fadein 0.4s ease both; }
+.section:nth-child(2) { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.1s; }
+.section:nth-child(4) { animation-delay: 0.15s; }
+.section:nth-child(5) { animation-delay: 0.2s; }
+.section:nth-child(6) { animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <h1>Industry 4.0</h1>
+      <div class="sub">Cheat Sheet &nbsp;·&nbsp; Facility Layout · Assembly Line · Location Theory · Outsourcing</div>
+    </div>
+    <div class="header-right">Topics, Definitions &amp; Formulas<br>extracted from exam paper</div>
+  </div>
+
+  <!-- 01 FACILITY LAYOUTS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Facility Layouts — Types &amp; Definitions</span>
+    </div>
+
+    <div class="def-block">
+      <div class="def-term">Product Layout<small>aka Line Layout</small></div>
+      <div class="def-body">Machines arranged in the <em>sequence of production operations</em>. Designed for <em>high volume, low variety</em>. Material flows continuously in one direction. Low WIP, low material handling. Requires high initial investment in specialised equipment. <span class="tag">e.g. aircraft assembly, automobile lines</span></div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Process Layout<small>aka Functional Layout</small></div>
+      <div class="def-body">Similar machines/functions <em>grouped together</em> (all drilling in one dept, all milling in another). Designed for <em>low volume, high variety</em>. Flexible and customisable but results in high material handling, high WIP, and complex routing. Operators need higher skill levels. <span class="tag">e.g. job shops, hospitals, repair centres</span></div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Group Layout<small>aka Cellular Manufacturing</small></div>
+      <div class="def-body">Products with <em>similar processing requirements</em> grouped into part families; machines arranged in cells. Best for <em>medium variety, medium volume</em>. Combines benefits of both product and process layouts. Suitable when many products share common components with only few customisations. <span class="tag">e.g. headset families with shared components</span></div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Fixed Position Layout</div>
+      <div class="def-body">The <em>product stays stationary</em>; workers, machines, materials come to it. Used when the product is too large, heavy, or fragile to move. Very high material handling cost. <span class="tag">e.g. ships, aircraft, construction, bridges</span></div>
+    </div>
+
+    <table class="comp-table">
+      <tr>
+        <th>Layout</th><th>Volume</th><th>Variety</th><th>Material Handling</th><th>WIP Inventory</th><th>Investment</th><th>Flexibility</th>
+      </tr>
+      <tr><td class="highlight">Product (Line)</td><td class="good">High</td><td class="bad">Low</td><td class="good">Low</td><td class="good">Low</td><td class="bad">High</td><td class="bad">Low</td></tr>
+      <tr><td class="highlight">Process (Functional)</td><td class="bad">Low</td><td class="good">High</td><td class="bad">High</td><td class="bad">High</td><td class="good">Low</td><td class="good">High</td></tr>
+      <tr><td class="highlight">Group (Cellular)</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td></tr>
+      <tr><td class="highlight">Fixed Position</td><td class="bad">Very Low</td><td class="good">Very High</td><td class="bad">Very High</td><td>—</td><td class="bad">High</td><td class="good">High</td></tr>
+    </table>
+
+    <div class="callout" style="margin-top:12px;">
+      <strong>Key distinction:</strong> Product layout → arranged by <strong>operation sequence</strong>. Process layout → arranged by <strong>machine type</strong>. Group layout → arranged by <strong>product family</strong>. If you see stages like Press shop → Body shop → Paint shop → Assembly, it is a <strong>Product Layout</strong>.
+    </div>
+  </div>
+
+
+  <!-- 02 ASSEMBLY LINE BALANCING -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Assembly Line Balancing — Concepts &amp; Formulas</span>
+    </div>
+
+    <div class="def-block">
+      <div class="def-term">Cycle Time (CT)</div>
+      <div class="def-body">Time between successive finished units coming off the line. Calculated from the target output rate. <em>No workstation can take longer than CT</em>. Set by: CT = Available Time ÷ Desired Output.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Bottleneck Station</div>
+      <div class="def-body">The workstation with the <em>longest task time</em>. Limits the entire line's production rate. Every unit must pass through all stations — the line moves only as fast as the <em>slowest station</em>.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Minimum Cycle Time (C<sub>min</sub>)</div>
+      <div class="def-body">Equal to the <em>longest individual task time</em>. The absolute lower bound — you cannot set CT below this because that task cannot be split between stations.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Maximum Cycle Time (C<sub>max</sub>)</div>
+      <div class="def-body">Equal to the <em>sum of all task times</em>. Would apply if there is only one workstation doing everything sequentially. Upper bound of CT.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Balance Delay (BD)</div>
+      <div class="def-body">Fraction of total allocated time that is <em>idle / wasted</em> across all stations. Measures inefficiency. BD = 0 means perfect balance (impossible in practice).</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Line Efficiency (E)</div>
+      <div class="def-body">Fraction of total allocated time that is <em>productively used</em>. Complement of Balance Delay. <em>E + BD = 1</em> (i.e., Efficiency% + BD% = 100%).</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Feasibility Condition</div>
+      <div class="def-body">A target output is achievable only if <em>CT<sub>required</sub> ≥ C<sub>min</sub></em>. If the required CT is less than the longest task time, the production target is physically impossible with that task structure.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Precedence Diagram</div>
+      <div class="def-body">A directed graph showing the <em>order constraints</em> between tasks. A task can only start after all its predecessors are done. Used to determine valid groupings of tasks into workstations.</div>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-title">Formulas — Assembly Line Balancing</div>
+      <div class="formula-grid">
+        <div>
+          <div class="formula-label">Cycle Time</div>
+          <div class="formula-expr">CT = T<sub>avail</sub> / Q</div>
+          <div class="formula-note">T<sub>avail</sub> = total available time per day<br>Q = required output per day</div>
+        </div>
+        <div>
+          <div class="formula-label">Min &amp; Max Cycle Time</div>
+          <div class="formula-expr">C<sub>min</sub> = max(t<sub>i</sub>)<br>C<sub>max</sub> = Σt<sub>i</sub></div>
+          <div class="formula-note">t<sub>i</sub> = individual task times</div>
+        </div>
+        <div>
+          <div class="formula-label">Balance Delay</div>
+          <div class="formula-expr">BD = (N·C − Σt<sub>i</sub>) / (N·C)</div>
+          <div class="formula-note">N = no. of workstations<br>C = chosen cycle time</div>
+        </div>
+        <div>
+          <div class="formula-label">Line Efficiency</div>
+          <div class="formula-expr">E = Σt<sub>i</sub> / (N·C) × 100</div>
+          <div class="formula-note">E% + BD% = 100% always</div>
+        </div>
+        <div>
+          <div class="formula-label">Min No. of Stations</div>
+          <div class="formula-expr">N<sub>min</sub> = ⌈ Σt<sub>i</sub> / C ⌉</div>
+          <div class="formula-note">Always round UP</div>
+        </div>
+        <div>
+          <div class="formula-label">Feasibility Check</div>
+          <div class="formula-expr">CT<sub>req</sub> ≥ C<sub>min</sub></div>
+          <div class="formula-note">If false → output target impossible</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="example-label">Worked Example — from paper (12 tasks, Σt = 85 min)</div>
+      <div class="example-steps">
+        Setup: 1 shift = 8 hr = 480 min/day &nbsp;|&nbsp; Target = 32 units/day &nbsp;|&nbsp; Longest task = 12 min<br>
+        ──────────────────────────────────────────────────────────────────────<br>
+        CT<sub>required</sub>  = 480 ÷ 32                              = <span class="ans">15 min</span><br>
+        C<sub>min</sub>        = max single task time                  = <span class="ans">12 min</span><br>
+        C<sub>max</sub>        = sum of all task times                 = <span class="ans">85 min</span><br>
+        Feasible?    15 ≥ 12 → CT<sub>req</sub> ≥ C<sub>min</sub>     = <span class="ans">YES ✓</span><br>
+        ──────────────────────────────────────────────────────────────────────<br>
+        Layout (1,2)→(3)→(4)→(5)→(6,7)→(8,9)→(10,11,12) → N = 7 stations<br>
+        Balance Delay  = (7×15 − 85) / (7×15) = 20/105     = <span class="ans">0.19</span><br>
+        Line Efficiency = (85 / 105) × 100                  = <span class="ans">80.95%</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 03 FACILITY LOCATION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Facility Location — Methods &amp; Definitions</span>
+    </div>
+
+    <div class="def-block">
+      <div class="def-term">Center of Gravity (CoG)</div>
+      <div class="def-body">Finds facility location as the <em>weighted average</em> of demand point coordinates. x* = Σ(w<sub>i</sub>·x<sub>i</sub>) / Σw<sub>i</sub> and similarly for y*. Fast and simple but an <em>approximation</em> — not always the true optimum.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Euclidean Method</div>
+      <div class="def-body">Minimises total <em>weighted straight-line (Euclidean) distance</em> between the facility and all demand points. Produces a <em>single optimal point (x*, y*)</em> — never a region. The solution <em>rarely matches the CoG</em> result except in special symmetric cases.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Cross-Median Method</div>
+      <div class="def-body">Finds optimal location using the <em>weighted median</em> of x and y coordinates independently. Uses rectilinear / Manhattan distance (not straight-line). Solved by sorting and finding cumulative demand crossing the 50% threshold.</div>
+    </div>
+
+    <div class="two-col" style="margin-top:12px;">
+      <div>
+        <div class="callout">
+          <strong>Euclidean — key facts:</strong><br>
+          • Result is always a <strong>single point</strong>, never a region<br>
+          • <strong>Rarely equals</strong> the Center of Gravity<br>
+          • CoG = simple weighted average (approximate)<br>
+          • Euclidean = iterative optimisation (exact)
+        </div>
+      </div>
+      <div class="example-box" style="margin-top:0;">
+        <div class="example-label">Cross-Median — steps</div>
+        <div class="example-steps">
+          1. Total demand = Σw<sub>i</sub><br>
+          2. Median threshold = Total / 2<br>
+          3. Sort by x → cumul sum → x* where cumul ≥ threshold<br>
+          4. Sort by y → cumul sum → y* where cumul ≥ threshold<br>
+          ────────────────────────────────<br>
+          A(1,2)×7, B(2,3)×1, C(3,5)×3, D(4,1)×5<br>
+          Total=16, threshold=8<br>
+          x: x=1 cumul=7, x=2 cumul=8 → x*=<span class="ans">2</span><br>
+          y: y=1 cumul=5, y=2 cumul=12 → y*=<span class="ans">2</span><br>
+          Optimal = <span class="ans">(2, 2)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 04 OUTSOURCING & OFFSHORING -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Outsourcing, Offshoring &amp; Global Operations</span>
+    </div>
+
+    <div class="def-block">
+      <div class="def-term">Outsourcing</div>
+      <div class="def-body">Contracting a <em>third-party organisation</em> to perform a function previously done in-house. Focus: <em>who does the work</em> (external party). Can be domestic or international.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Offshoring</div>
+      <div class="def-body">Moving a business process to a <em>different country</em>. Focus: <em>where the work is done</em>. Can be through your own subsidiary or a foreign vendor. Does NOT have to involve an external party.</div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Captive Offshoring</div>
+      <div class="def-body">Company sets up its <em>own operations in a foreign country</em> — still in-house, just relocated abroad. <span class="tag">Micron (US) → own analytics team in India</span></div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Offshore Outsourcing</div>
+      <div class="def-body">Contracting a <em>foreign company</em> to perform work. Both offshored AND outsourced. <span class="tag">Western Australia agency → TCS Pune, India</span></div>
+    </div>
+    <div class="def-block">
+      <div class="def-term">Domestic Outsourcing</div>
+      <div class="def-body">Contracting a third party within the <em>same country</em>. Outsourcing but NOT offshoring. <span class="tag">Tata Motors → TACO group (both India)</span></div>
+    </div>
+
+    <table class="comp-table">
+      <tr><th>Scenario</th><th>Classification</th><th>Offshoring?</th><th>Outsourcing?</th></tr>
+      <tr><td>Micron (US) → own team in India</td><td class="highlight">Captive Offshoring</td><td class="good">Yes</td><td class="bad">No (own team)</td></tr>
+      <tr><td>Micron → TSMC Taiwan (contract)</td><td class="highlight">Foreign Outsourcing</td><td class="bad">No*</td><td class="good">Yes</td></tr>
+      <tr><td>W. Australia agency → TCS Pune</td><td class="highlight">Offshore Outsourcing</td><td class="good">Yes</td><td class="good">Yes</td></tr>
+      <tr><td>Tata Motors → TACO group</td><td class="highlight">Domestic Outsourcing</td><td class="bad">No</td><td class="good">Yes</td></tr>
+    </table>
+    <div class="note-strip">* Classified as outsourcing (foreign vendor) in the paper's context — not offshoring of own operations</div>
+
+    <div class="callout" style="margin-top:12px;">
+      <strong>Quick test:</strong> Is the work in another country? → Offshoring. Is it done by a third party? → Outsourcing. Both? → Offshore Outsourcing. Same country + third party? → Domestic Outsourcing only.
+    </div>
+  </div>
+
+
+  <!-- 05 QUICK REVISION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Quick Revision — Rules &amp; Memory Aids</span>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">Which Layout to Choose?</div>
+        <div style="font-size:0.84rem; line-height:2.1;">
+          1 product, millions of units → <strong style="color:var(--blue)">Product Layout</strong><br>
+          Many unique products, few units → <strong style="color:var(--rust)">Process Layout</strong><br>
+          Product families, shared parts → <strong style="color:var(--gold)">Group Layout</strong><br>
+          Product can't move (ships, bridges) → <strong style="color:var(--mid)">Fixed Position</strong>
+        </div>
+
+        <div style="margin-top:16px;">
+        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">Assembly Line Rules</div>
+        <div style="font-size:0.84rem; line-height:2.1;">
+          Production rate → determined by <strong style="color:var(--rust)">slowest station</strong><br>
+          Always true: <strong style="color:var(--teal)">E% + BD% = 100%</strong><br>
+          Valid CT range: <strong style="color:var(--blue)">C<sub>min</sub> ≤ CT ≤ C<sub>max</sub></strong><br>
+          Feasible if: <strong style="color:var(--teal)">CT<sub>req</sub> ≥ C<sub>min</sub></strong>
+        </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">Location Method Differences</div>
+        <div style="font-size:0.84rem; line-height:2.1;">
+          <strong style="color:var(--blue)">CoG</strong> → weighted average coordinates. Fast, approximate.<br>
+          <strong style="color:var(--rust)">Euclidean</strong> → minimise straight-line distance. Exact point. Rarely = CoG.<br>
+          <strong style="color:var(--gold)">Cross-Median</strong> → weighted median of x &amp; y. Manhattan distance.
+        </div>
+
+        <div style="margin-top:16px;">
+        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">All Formulas at a Glance</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:0.78rem; line-height:2; background:white; padding:10px 12px; border:1px solid var(--rule);">
+          CT = T<sub>avail</sub> / Q<br>
+          C<sub>min</sub> = max(t<sub>i</sub>) &nbsp;|&nbsp; C<sub>max</sub> = Σt<sub>i</sub><br>
+          N<sub>min</sub> = ⌈ Σt<sub>i</sub> / C ⌉<br>
+          BD = (N·C − Σt<sub>i</sub>) / (N·C)<br>
+          E  = Σt<sub>i</sub> / (N·C) × 100<br>
+          Feasible: CT<sub>req</sub> ≥ C<sub>min</sub>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top: 2px solid var(--ink); padding-top: 12px; display:flex; justify-content:space-between;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--mid); letter-spacing:1px; text-transform:uppercase;">Industry 4.0 · Cheat Sheet</div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--mid);">Facility Layout · Assembly Line · Location · Outsourcing</div>
+  </div>
+
+</div>
+</body>
+</html>
