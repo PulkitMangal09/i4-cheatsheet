@@ -3,372 +3,468 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Industry 4.0 Cheat Sheet</title>
+<title>Exam Cheat Sheet</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --paper: #f5f0e8;
-  --ink: #1a1612;
-  --rust: #c0392b;
-  --teal: #1a7a6e;
-  --gold: #b8860b;
-  --blue: #1e3a5f;
-  --mid: #6b6560;
-  --light: #e8e3d8;
-  --rule: #c8c0b0;
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --paper:#f5f0e8;--ink:#1a1612;--rule:#c8c0b0;--light:#e8e3d8;--mid:#6b6560;
+  /* Industry 4.0 palette */
+  --i-rust:#c0392b;--i-teal:#1a7a6e;--i-gold:#b8860b;--i-blue:#1e3a5f;
+  /* LLM palette */
+  --l-purple:#5b2d8e;--l-cyan:#0e7490;--l-orange:#c2410c;--l-green:#166534;
 }
-body { background: var(--paper); color: var(--ink); font-family: 'Fraunces', Georgia, serif; font-size: 14px; line-height: 1.6; }
-.page { max-width: 900px; margin: 0 auto; padding: 48px 40px 80px; }
+body{background:var(--paper);color:var(--ink);font-family:'Fraunces',Georgia,serif;font-size:14px;line-height:1.6}
 
-.header { border-top: 4px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 20px 0 16px; margin-bottom: 36px; display: flex; justify-content: space-between; align-items: flex-end; }
-.header h1 { font-size: 2.8rem; font-weight: 900; line-height: 1; letter-spacing: -1px; }
-.header .sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--mid); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
-.header-right { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--mid); text-align: right; line-height: 1.8; }
+/* ── TAB SWITCHER ── */
+.switcher{
+  position:sticky;top:0;z-index:100;
+  background:var(--ink);
+  display:flex;align-items:stretch;
+  border-bottom:3px solid var(--ink);
+}
+.switcher-logo{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;
+  color:#a09880;padding:0 20px;display:flex;align-items:center;
+  border-right:1px solid #333;white-space:nowrap;
+}
+.tab-btn{
+  flex:1;padding:14px 20px;border:none;background:transparent;cursor:pointer;
+  font-family:'Fraunces',serif;font-size:1rem;font-weight:700;
+  color:#a09880;transition:all .25s;border-right:1px solid #2a2a2a;
+  position:relative;
+}
+.tab-btn:last-child{border-right:none}
+.tab-btn span{font-family:'IBM Plex Mono',monospace;font-size:9px;display:block;letter-spacing:2px;font-weight:400;margin-top:2px;opacity:.7}
+.tab-btn.active-i4{color:#fff;background:var(--i-blue)}
+.tab-btn.active-i4::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:3px;background:var(--i-teal)}
+.tab-btn.active-llm{color:#fff;background:var(--l-purple)}
+.tab-btn.active-llm::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:3px;background:var(--l-cyan)}
+.tab-btn:not(.active-i4):not(.active-llm):hover{color:#fff;background:#1e1e1e}
 
-.section { margin-bottom: 40px; }
-.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
-.section-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; background: var(--ink); color: var(--paper); padding: 2px 7px; letter-spacing: 1px; }
-.section-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.3px; }
+/* ── PANELS ── */
+.panel{display:none;animation:fadein .3s ease}
+.panel.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-.def-block { display: grid; grid-template-columns: 180px 1fr; margin-bottom: 1px; border-bottom: 1px solid var(--light); }
-.def-block:last-child { border-bottom: none; }
-.def-term { font-weight: 700; font-size: 0.88rem; padding: 9px 14px 9px 0; border-right: 1px solid var(--rule); color: var(--blue); line-height: 1.4; }
-.def-term small { display:block; font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 400; color: var(--mid); }
-.def-body { padding: 9px 0 9px 14px; font-size: 0.85rem; color: #2e2a26; line-height: 1.55; }
-.def-body em { color: var(--rust); font-style: normal; font-weight: 600; }
-.tag { font-family: 'IBM Plex Mono', monospace; font-size: 9px; background: var(--light); border: 1px solid var(--rule); padding: 1px 5px; color: var(--mid); margin-left: 4px; }
+/* ── PAGE WRAPPER ── */
+.page{max-width:920px;margin:0 auto;padding:36px 36px 80px}
 
-.comp-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 12px; }
-.comp-table th { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 10px; background: var(--ink); color: var(--paper); text-align: left; font-weight: 400; }
-.comp-table td { padding: 8px 10px; border-bottom: 1px solid var(--light); vertical-align: top; line-height: 1.4; color: #2e2a26; }
-.comp-table tr:last-child td { border-bottom: none; }
-.highlight { font-weight: 700; color: var(--blue); }
-.good { color: var(--teal); font-weight: 600; }
-.bad { color: var(--rust); font-weight: 600; }
-.mid-val { color: var(--gold); font-weight: 600; }
+/* ── HEADERS ── */
+.sheet-header{
+  padding:24px 0 18px;margin-bottom:32px;
+  border-bottom:2px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:flex-end;
+}
+.sheet-header h1{font-size:2.6rem;font-weight:900;line-height:1;letter-spacing:-1px}
+.sheet-header h1 em{font-style:normal}
+.sheet-header .sub{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mid);letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+.sheet-header .meta{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--mid);text-align:right;line-height:1.8}
 
-.callout { border-left: 3px solid var(--rust); padding: 10px 14px; background: rgba(192,57,43,0.05); margin: 12px 0; font-size: 0.83rem; line-height: 1.55; }
-.callout strong { color: var(--rust); }
+/* ── SECTION ── */
+.section{margin-bottom:38px}
+.sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+.sec-num{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 7px;letter-spacing:1px;color:var(--paper)}
+.sec-title{font-size:1.2rem;font-weight:700;letter-spacing:-.3px}
 
-.formula-section { background: var(--ink); color: var(--paper); padding: 20px 22px; margin-top: 12px; }
-.formula-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #a09880; text-transform: uppercase; }
-.formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 14px; }
-.formula-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; color: #a09880; text-transform: uppercase; margin-bottom: 6px; }
-.formula-expr { font-family: 'IBM Plex Mono', monospace; font-size: 1rem; color: #f0e8d0; font-weight: 600; line-height: 1.5; }
-.formula-note { font-size: 0.75rem; color: #a09880; margin-top: 4px; font-family: 'IBM Plex Mono', monospace; line-height: 1.4; }
+/* i4 accents */
+.i4 .sec-num{background:var(--i-blue)}
+.i4 .def-term{color:var(--i-blue)}
+/* llm accents */
+.llm .sec-num{background:var(--l-purple)}
+.llm .def-term{color:var(--l-purple)}
 
-.example-box { border: 1px solid var(--rule); padding: 14px 16px; margin-top: 10px; background: white; }
-.example-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; margin-bottom: 8px; }
-.example-steps { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: #2e2a26; line-height: 2; }
-.example-steps .ans { color: var(--teal); font-weight: 600; }
+/* ── DEFS ── */
+.def-block{display:grid;grid-template-columns:190px 1fr;border-bottom:1px solid var(--light)}
+.def-block:last-child{border-bottom:none}
+.def-term{font-weight:700;font-size:.87rem;padding:9px 12px 9px 0;border-right:1px solid var(--rule);line-height:1.4}
+.def-term small{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:400;color:var(--mid)}
+.def-body{padding:9px 0 9px 13px;font-size:.84rem;color:#2e2a26;line-height:1.55}
+.def-body em{font-style:normal;font-weight:600}
+.i4 .def-body em{color:var(--i-rust)}
+.llm .def-body em{color:var(--l-orange)}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:9px;background:var(--light);border:1px solid var(--rule);padding:1px 5px;color:var(--mid);margin-left:4px}
 
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:.81rem;margin-top:10px}
+.tbl th{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:7px 9px;text-align:left;font-weight:400;color:var(--paper)}
+.i4 .tbl th{background:var(--i-blue)}
+.llm .tbl th{background:var(--l-purple)}
+.tbl td{padding:7px 9px;border-bottom:1px solid var(--light);vertical-align:top;line-height:1.4;color:#2e2a26}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .hl{font-weight:700}
+.i4 .tbl .hl{color:var(--i-blue)}
+.llm .tbl .hl{color:var(--l-purple)}
+.good{color:var(--i-teal);font-weight:600}
+.bad{color:var(--i-rust);font-weight:600}
+.mid-v{color:var(--i-gold);font-weight:600}
+.yes{color:var(--l-green);font-weight:600}
+.no{color:var(--l-orange);font-weight:600}
 
-.note-strip { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--mid); letter-spacing: 1px; padding: 6px 0; border-top: 1px solid var(--rule); margin-top: 10px; }
+/* ── FORMULA BOX ── */
+.fbox{padding:18px 20px;margin-top:10px}
+.i4 .fbox{background:var(--i-blue)}
+.llm .fbox{background:var(--l-purple)}
+.fbox-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:#a09880;text-transform:uppercase;margin-bottom:12px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.flabel{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:#a09880;text-transform:uppercase;margin-bottom:5px}
+.fexpr{font-family:'IBM Plex Mono',monospace;font-size:.95rem;color:#f0e8d0;font-weight:600;line-height:1.6}
+.fnote{font-size:.73rem;color:#a09880;margin-top:3px;font-family:'IBM Plex Mono',monospace;line-height:1.4}
 
-@keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.section { animation: fadein 0.4s ease both; }
-.section:nth-child(2) { animation-delay: 0.05s; }
-.section:nth-child(3) { animation-delay: 0.1s; }
-.section:nth-child(4) { animation-delay: 0.15s; }
-.section:nth-child(5) { animation-delay: 0.2s; }
-.section:nth-child(6) { animation-delay: 0.25s; }
+/* ── EXAMPLE BOX ── */
+.ex-box{border:1px solid var(--rule);padding:13px 15px;margin-top:8px;background:#fff}
+.ex-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:7px}
+.ex-steps{font-family:'IBM Plex Mono',monospace;font-size:.77rem;color:#2e2a26;line-height:2}
+.i4 .ex-steps .ans{color:var(--i-teal);font-weight:600}
+.llm .ex-steps .ans{color:var(--l-green);font-weight:600}
+
+/* ── CALLOUT ── */
+.callout{border-left:3px solid;padding:10px 13px;margin:10px 0;font-size:.82rem;line-height:1.55}
+.i4 .callout{border-color:var(--i-rust);background:rgba(192,57,43,.05)}
+.i4 .callout strong{color:var(--i-rust)}
+.llm .callout{border-color:var(--l-orange);background:rgba(194,65,12,.05)}
+.llm .callout strong{color:var(--l-orange)}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ── FOOTER ── */
+.sheet-footer{border-top:2px solid var(--ink);padding-top:10px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--mid);margin-top:10px}
 </style>
 </head>
 <body>
+
+<!-- TAB SWITCHER -->
+<div class="switcher">
+  <div class="switcher-logo">EXAM<br>CHEAT SHEETS</div>
+  <button class="tab-btn active-i4" onclick="switchTab('i4',this)">
+    Industry 4.0
+    <span>Facility Layout · Assembly Line · Location</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('llm',this)">
+    Large Language Models
+    <span>Transformers · Attention · Decoding</span>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  PANEL 1: INDUSTRY 4.0                             -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel active i4" id="panel-i4">
 <div class="page">
 
-  <div class="header">
+  <div class="sheet-header">
     <div>
-      <h1>Industry 4.0</h1>
-      <div class="sub">Cheat Sheet &nbsp;·&nbsp; Facility Layout · Assembly Line · Location Theory · Outsourcing</div>
+      <h1>Industry <em style="color:var(--i-teal)">4.0</em></h1>
+      <div class="sub">Facility Layout · Assembly Line · Location Theory · Outsourcing</div>
     </div>
-    <div class="header-right">Topics, Definitions &amp; Formulas<br>extracted from exam paper</div>
+    <div class="meta">Topics · Definitions · Formulas<br>extracted from exam paper</div>
   </div>
 
   <!-- 01 FACILITY LAYOUTS -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <span class="section-title">Facility Layouts — Types &amp; Definitions</span>
-    </div>
+  <div class="section i4">
+    <div class="sec-hdr"><span class="sec-num">01</span><span class="sec-title">Facility Layouts — Types &amp; Definitions</span></div>
+    <div class="def-block"><div class="def-term">Product Layout<small>aka Line Layout</small></div><div class="def-body">Machines arranged in the <em>sequence of production operations</em>. For <em>high volume, low variety</em>. Smooth one-directional flow. Low WIP, low material handling, high investment. <span class="tag">e.g. aircraft, automobile lines</span></div></div>
+    <div class="def-block"><div class="def-term">Process Layout<small>aka Functional Layout</small></div><div class="def-body">Similar machines/functions <em>grouped together by type</em>. For <em>low volume, high variety</em>. Flexible but high WIP, high material handling, complex routing. Operators need higher skill. <span class="tag">e.g. job shops, hospitals</span></div></div>
+    <div class="def-block"><div class="def-term">Group Layout<small>aka Cellular Manufacturing</small></div><div class="def-body">Products with <em>similar processing needs</em> grouped into part families, machines in cells. For <em>medium variety, medium volume</em>. Hybrid of process + product advantages. Best when products share common components. <span class="tag">e.g. headset families</span></div></div>
+    <div class="def-block"><div class="def-term">Fixed Position Layout</div><div class="def-body"><em>Product stays stationary</em>; workers &amp; machines come to it. Used when product is too large/heavy to move. Very high material handling. <span class="tag">e.g. ships, bridges, construction</span></div></div>
 
-    <div class="def-block">
-      <div class="def-term">Product Layout<small>aka Line Layout</small></div>
-      <div class="def-body">Machines arranged in the <em>sequence of production operations</em>. Designed for <em>high volume, low variety</em>. Material flows continuously in one direction. Low WIP, low material handling. Requires high initial investment in specialised equipment. <span class="tag">e.g. aircraft assembly, automobile lines</span></div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Process Layout<small>aka Functional Layout</small></div>
-      <div class="def-body">Similar machines/functions <em>grouped together</em> (all drilling in one dept, all milling in another). Designed for <em>low volume, high variety</em>. Flexible and customisable but results in high material handling, high WIP, and complex routing. Operators need higher skill levels. <span class="tag">e.g. job shops, hospitals, repair centres</span></div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Group Layout<small>aka Cellular Manufacturing</small></div>
-      <div class="def-body">Products with <em>similar processing requirements</em> grouped into part families; machines arranged in cells. Best for <em>medium variety, medium volume</em>. Combines benefits of both product and process layouts. Suitable when many products share common components with only few customisations. <span class="tag">e.g. headset families with shared components</span></div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Fixed Position Layout</div>
-      <div class="def-body">The <em>product stays stationary</em>; workers, machines, materials come to it. Used when the product is too large, heavy, or fragile to move. Very high material handling cost. <span class="tag">e.g. ships, aircraft, construction, bridges</span></div>
-    </div>
-
-    <table class="comp-table">
-      <tr>
-        <th>Layout</th><th>Volume</th><th>Variety</th><th>Material Handling</th><th>WIP Inventory</th><th>Investment</th><th>Flexibility</th>
-      </tr>
-      <tr><td class="highlight">Product (Line)</td><td class="good">High</td><td class="bad">Low</td><td class="good">Low</td><td class="good">Low</td><td class="bad">High</td><td class="bad">Low</td></tr>
-      <tr><td class="highlight">Process (Functional)</td><td class="bad">Low</td><td class="good">High</td><td class="bad">High</td><td class="bad">High</td><td class="good">Low</td><td class="good">High</td></tr>
-      <tr><td class="highlight">Group (Cellular)</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td><td class="mid-val">Medium</td></tr>
-      <tr><td class="highlight">Fixed Position</td><td class="bad">Very Low</td><td class="good">Very High</td><td class="bad">Very High</td><td>—</td><td class="bad">High</td><td class="good">High</td></tr>
+    <table class="tbl">
+      <tr><th>Layout</th><th>Volume</th><th>Variety</th><th>Mat. Handling</th><th>WIP Inventory</th><th>Investment</th><th>Flexibility</th></tr>
+      <tr><td class="hl">Product (Line)</td><td class="good">High</td><td class="bad">Low</td><td class="good">Low</td><td class="good">Low</td><td class="bad">High</td><td class="bad">Low</td></tr>
+      <tr><td class="hl">Process (Functional)</td><td class="bad">Low</td><td class="good">High</td><td class="bad">High</td><td class="bad">High</td><td class="good">Low</td><td class="good">High</td></tr>
+      <tr><td class="hl">Group (Cellular)</td><td class="mid-v">Medium</td><td class="mid-v">Medium</td><td class="mid-v">Medium</td><td class="mid-v">Medium</td><td class="mid-v">Medium</td><td class="mid-v">Medium</td></tr>
+      <tr><td class="hl">Fixed Position</td><td class="bad">Very Low</td><td class="good">Very High</td><td class="bad">Very High</td><td>—</td><td class="bad">High</td><td class="good">High</td></tr>
     </table>
-
-    <div class="callout" style="margin-top:12px;">
-      <strong>Key distinction:</strong> Product layout → arranged by <strong>operation sequence</strong>. Process layout → arranged by <strong>machine type</strong>. Group layout → arranged by <strong>product family</strong>. If you see stages like Press shop → Body shop → Paint shop → Assembly, it is a <strong>Product Layout</strong>.
-    </div>
+    <div class="callout"><strong>Key rule:</strong> See stages like Press shop → Body shop → Paint shop → Assembly? That's a <strong>Product Layout</strong>. Similar machines grouped together (all drills, all mills)? That's <strong>Process Layout</strong>. Product families sharing parts? <strong>Group Layout</strong>.</div>
   </div>
 
+  <!-- 02 ASSEMBLY LINE -->
+  <div class="section i4">
+    <div class="sec-hdr"><span class="sec-num">02</span><span class="sec-title">Assembly Line Balancing — Concepts &amp; Formulas</span></div>
+    <div class="def-block"><div class="def-term">Cycle Time (CT)</div><div class="def-body">Time between successive finished units off the line. CT = Available Time ÷ Output. <em>No station can exceed CT.</em></div></div>
+    <div class="def-block"><div class="def-term">Bottleneck</div><div class="def-body">Station with the <em>longest task time</em>. Limits entire line's output. Production rate = rate of the <em>slowest station</em>.</div></div>
+    <div class="def-block"><div class="def-term">Min Cycle Time (C<sub>min</sub>)</div><div class="def-body">= <em>longest single task time</em>. Absolute lower bound — CT cannot go below this.</div></div>
+    <div class="def-block"><div class="def-term">Max Cycle Time (C<sub>max</sub>)</div><div class="def-body">= <em>sum of all task times</em>. Upper bound — if only one station does everything.</div></div>
+    <div class="def-block"><div class="def-term">Balance Delay (BD)</div><div class="def-body">Fraction of total time that is <em>idle/wasted</em> across all stations. BD = 0 means perfect (impossible).</div></div>
+    <div class="def-block"><div class="def-term">Line Efficiency (E)</div><div class="def-body">Fraction of total time <em>productively used</em>. <em>E% + BD% = 100%</em> always.</div></div>
+    <div class="def-block"><div class="def-term">Feasibility Condition</div><div class="def-body">Target is feasible only if <em>CT<sub>required</sub> ≥ C<sub>min</sub></em>. If not, target is physically impossible.</div></div>
+    <div class="def-block"><div class="def-term">Precedence Diagram</div><div class="def-body">Directed graph showing <em>order constraints</em> between tasks. A task can only start after all predecessors are done.</div></div>
 
-  <!-- 02 ASSEMBLY LINE BALANCING -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <span class="section-title">Assembly Line Balancing — Concepts &amp; Formulas</span>
-    </div>
-
-    <div class="def-block">
-      <div class="def-term">Cycle Time (CT)</div>
-      <div class="def-body">Time between successive finished units coming off the line. Calculated from the target output rate. <em>No workstation can take longer than CT</em>. Set by: CT = Available Time ÷ Desired Output.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Bottleneck Station</div>
-      <div class="def-body">The workstation with the <em>longest task time</em>. Limits the entire line's production rate. Every unit must pass through all stations — the line moves only as fast as the <em>slowest station</em>.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Minimum Cycle Time (C<sub>min</sub>)</div>
-      <div class="def-body">Equal to the <em>longest individual task time</em>. The absolute lower bound — you cannot set CT below this because that task cannot be split between stations.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Maximum Cycle Time (C<sub>max</sub>)</div>
-      <div class="def-body">Equal to the <em>sum of all task times</em>. Would apply if there is only one workstation doing everything sequentially. Upper bound of CT.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Balance Delay (BD)</div>
-      <div class="def-body">Fraction of total allocated time that is <em>idle / wasted</em> across all stations. Measures inefficiency. BD = 0 means perfect balance (impossible in practice).</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Line Efficiency (E)</div>
-      <div class="def-body">Fraction of total allocated time that is <em>productively used</em>. Complement of Balance Delay. <em>E + BD = 1</em> (i.e., Efficiency% + BD% = 100%).</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Feasibility Condition</div>
-      <div class="def-body">A target output is achievable only if <em>CT<sub>required</sub> ≥ C<sub>min</sub></em>. If the required CT is less than the longest task time, the production target is physically impossible with that task structure.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Precedence Diagram</div>
-      <div class="def-body">A directed graph showing the <em>order constraints</em> between tasks. A task can only start after all its predecessors are done. Used to determine valid groupings of tasks into workstations.</div>
-    </div>
-
-    <div class="formula-section">
-      <div class="formula-title">Formulas — Assembly Line Balancing</div>
-      <div class="formula-grid">
-        <div>
-          <div class="formula-label">Cycle Time</div>
-          <div class="formula-expr">CT = T<sub>avail</sub> / Q</div>
-          <div class="formula-note">T<sub>avail</sub> = total available time per day<br>Q = required output per day</div>
-        </div>
-        <div>
-          <div class="formula-label">Min &amp; Max Cycle Time</div>
-          <div class="formula-expr">C<sub>min</sub> = max(t<sub>i</sub>)<br>C<sub>max</sub> = Σt<sub>i</sub></div>
-          <div class="formula-note">t<sub>i</sub> = individual task times</div>
-        </div>
-        <div>
-          <div class="formula-label">Balance Delay</div>
-          <div class="formula-expr">BD = (N·C − Σt<sub>i</sub>) / (N·C)</div>
-          <div class="formula-note">N = no. of workstations<br>C = chosen cycle time</div>
-        </div>
-        <div>
-          <div class="formula-label">Line Efficiency</div>
-          <div class="formula-expr">E = Σt<sub>i</sub> / (N·C) × 100</div>
-          <div class="formula-note">E% + BD% = 100% always</div>
-        </div>
-        <div>
-          <div class="formula-label">Min No. of Stations</div>
-          <div class="formula-expr">N<sub>min</sub> = ⌈ Σt<sub>i</sub> / C ⌉</div>
-          <div class="formula-note">Always round UP</div>
-        </div>
-        <div>
-          <div class="formula-label">Feasibility Check</div>
-          <div class="formula-expr">CT<sub>req</sub> ≥ C<sub>min</sub></div>
-          <div class="formula-note">If false → output target impossible</div>
-        </div>
+    <div class="fbox i4">
+      <div class="fbox-title">Formulas — Assembly Line Balancing</div>
+      <div class="fgrid">
+        <div><div class="flabel">Cycle Time</div><div class="fexpr">CT = T_avail / Q</div><div class="fnote">Q = required output per period</div></div>
+        <div><div class="flabel">Min &amp; Max CT</div><div class="fexpr">C_min = max(tᵢ)<br>C_max = Σtᵢ</div><div class="fnote">tᵢ = individual task times</div></div>
+        <div><div class="flabel">Balance Delay</div><div class="fexpr">BD = (N·C − Σtᵢ) / (N·C)</div><div class="fnote">N = no. of workstations</div></div>
+        <div><div class="flabel">Line Efficiency</div><div class="fexpr">E = Σtᵢ / (N·C) × 100</div><div class="fnote">E% + BD% = 100% always</div></div>
+        <div><div class="flabel">Min No. of Stations</div><div class="fexpr">N_min = ⌈ Σtᵢ / C ⌉</div><div class="fnote">Always round UP</div></div>
+        <div><div class="flabel">Feasibility Check</div><div class="fexpr">CT_req ≥ C_min → OK</div><div class="fnote">If false → target impossible</div></div>
       </div>
     </div>
 
-    <div class="example-box">
-      <div class="example-label">Worked Example — from paper (12 tasks, Σt = 85 min)</div>
-      <div class="example-steps">
-        Setup: 1 shift = 8 hr = 480 min/day &nbsp;|&nbsp; Target = 32 units/day &nbsp;|&nbsp; Longest task = 12 min<br>
-        ──────────────────────────────────────────────────────────────────────<br>
-        CT<sub>required</sub>  = 480 ÷ 32                              = <span class="ans">15 min</span><br>
-        C<sub>min</sub>        = max single task time                  = <span class="ans">12 min</span><br>
-        C<sub>max</sub>        = sum of all task times                 = <span class="ans">85 min</span><br>
-        Feasible?    15 ≥ 12 → CT<sub>req</sub> ≥ C<sub>min</sub>     = <span class="ans">YES ✓</span><br>
-        ──────────────────────────────────────────────────────────────────────<br>
-        Layout (1,2)→(3)→(4)→(5)→(6,7)→(8,9)→(10,11,12) → N = 7 stations<br>
-        Balance Delay  = (7×15 − 85) / (7×15) = 20/105     = <span class="ans">0.19</span><br>
-        Line Efficiency = (85 / 105) × 100                  = <span class="ans">80.95%</span>
+    <div class="ex-box i4">
+      <div class="ex-label">Worked Example — from paper (12 tasks, Σt = 85 min)</div>
+      <div class="ex-steps">
+        Setup: 1 shift=8hr=480 min/day | Target=32 units/day | Longest task=12 min<br>
+        ────────────────────────────────────────────────────────<br>
+        CT_required  = 480 ÷ 32 = <span class="ans">15 min</span><br>
+        C_min        = max task time = <span class="ans">12 min</span> &nbsp;|&nbsp; C_max = Σ tasks = <span class="ans">85 min</span><br>
+        Feasible?    15 ≥ 12 → <span class="ans">YES ✓</span><br>
+        Layout: (1,2)→(3)→(4)→(5)→(6,7)→(8,9)→(10,11,12) → N=7<br>
+        BD = (105 − 85)/105 = <span class="ans">0.19</span> &nbsp;|&nbsp; Efficiency = 85/105×100 = <span class="ans">80.95%</span>
       </div>
     </div>
   </div>
-
 
   <!-- 03 FACILITY LOCATION -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <span class="section-title">Facility Location — Methods &amp; Definitions</span>
-    </div>
+  <div class="section i4">
+    <div class="sec-hdr"><span class="sec-num">03</span><span class="sec-title">Facility Location — Methods</span></div>
+    <div class="def-block"><div class="def-term">Center of Gravity (CoG)</div><div class="def-body">Weighted average of demand coordinates. x* = Σ(wᵢ·xᵢ)/Σwᵢ. Fast but <em>approximate</em> — not always optimal.</div></div>
+    <div class="def-block"><div class="def-term">Euclidean Method</div><div class="def-body">Minimises total weighted straight-line distance. Gives one <em>exact single point (x*, y*)</em> — never a region. <em>Rarely matches the CoG</em> result.</div></div>
+    <div class="def-block"><div class="def-term">Cross-Median Method</div><div class="def-body">Optimal location via the <em>weighted median</em> of x &amp; y independently. Uses Manhattan distance. Sort by coordinate → find cumulative demand crossing total/2 threshold.</div></div>
 
-    <div class="def-block">
-      <div class="def-term">Center of Gravity (CoG)</div>
-      <div class="def-body">Finds facility location as the <em>weighted average</em> of demand point coordinates. x* = Σ(w<sub>i</sub>·x<sub>i</sub>) / Σw<sub>i</sub> and similarly for y*. Fast and simple but an <em>approximation</em> — not always the true optimum.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Euclidean Method</div>
-      <div class="def-body">Minimises total <em>weighted straight-line (Euclidean) distance</em> between the facility and all demand points. Produces a <em>single optimal point (x*, y*)</em> — never a region. The solution <em>rarely matches the CoG</em> result except in special symmetric cases.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Cross-Median Method</div>
-      <div class="def-body">Finds optimal location using the <em>weighted median</em> of x and y coordinates independently. Uses rectilinear / Manhattan distance (not straight-line). Solved by sorting and finding cumulative demand crossing the 50% threshold.</div>
-    </div>
-
-    <div class="two-col" style="margin-top:12px;">
-      <div>
-        <div class="callout">
-          <strong>Euclidean — key facts:</strong><br>
-          • Result is always a <strong>single point</strong>, never a region<br>
-          • <strong>Rarely equals</strong> the Center of Gravity<br>
-          • CoG = simple weighted average (approximate)<br>
-          • Euclidean = iterative optimisation (exact)
-        </div>
-      </div>
-      <div class="example-box" style="margin-top:0;">
-        <div class="example-label">Cross-Median — steps</div>
-        <div class="example-steps">
-          1. Total demand = Σw<sub>i</sub><br>
-          2. Median threshold = Total / 2<br>
-          3. Sort by x → cumul sum → x* where cumul ≥ threshold<br>
-          4. Sort by y → cumul sum → y* where cumul ≥ threshold<br>
-          ────────────────────────────────<br>
-          A(1,2)×7, B(2,3)×1, C(3,5)×3, D(4,1)×5<br>
-          Total=16, threshold=8<br>
-          x: x=1 cumul=7, x=2 cumul=8 → x*=<span class="ans">2</span><br>
-          y: y=1 cumul=5, y=2 cumul=12 → y*=<span class="ans">2</span><br>
-          Optimal = <span class="ans">(2, 2)</span>
-        </div>
+    <div class="two-col" style="margin-top:10px">
+      <div class="callout i4"><strong>Euclidean facts:</strong> Always a single <strong>point</strong> not a region. <strong>Rarely equals CoG</strong> (only in special symmetric cases). CoG = approximation. Euclidean = exact optimisation.</div>
+      <div class="ex-box i4" style="margin-top:0">
+        <div class="ex-label">Cross-Median — Paper Example</div>
+        <div class="ex-steps">A(1,2)×7, B(2,3)×1, C(3,5)×3, D(4,1)×5<br>Total=16, threshold=8<br>x-sort: x=1→cumul=7, x=2→cumul=8 → x*=<span class="ans">2</span><br>y-sort: y=1→cumul=5, y=2→cumul=12 → y*=<span class="ans">2</span><br>Optimal = <span class="ans">(2, 2)</span></div>
       </div>
     </div>
   </div>
 
+  <!-- 04 OUTSOURCING -->
+  <div class="section i4">
+    <div class="sec-hdr"><span class="sec-num">04</span><span class="sec-title">Outsourcing &amp; Offshoring</span></div>
+    <div class="def-block"><div class="def-term">Outsourcing</div><div class="def-body">Contracting a <em>third party</em> to perform a function. Focus: <em>who</em> does the work (external). Can be domestic or international.</div></div>
+    <div class="def-block"><div class="def-term">Offshoring</div><div class="def-body">Moving a process to a <em>different country</em>. Focus: <em>where</em> the work is done. Can be own subsidiary or foreign vendor.</div></div>
+    <div class="def-block"><div class="def-term">Captive Offshoring</div><div class="def-body">Company sets up its <em>own operations abroad</em> — in-house but in another country. <span class="tag">Micron US → own team in India</span></div></div>
+    <div class="def-block"><div class="def-term">Offshore Outsourcing</div><div class="def-body">Contract a <em>foreign company</em> — both offshored AND outsourced. <span class="tag">W. Australia → TCS Pune</span></div></div>
+    <div class="def-block"><div class="def-term">Domestic Outsourcing</div><div class="def-body">Third party in the <em>same country</em>. Outsourcing but NOT offshoring. <span class="tag">Tata Motors → TACO group (both India)</span></div></div>
 
-  <!-- 04 OUTSOURCING & OFFSHORING -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">04</span>
-      <span class="section-title">Outsourcing, Offshoring &amp; Global Operations</span>
-    </div>
-
-    <div class="def-block">
-      <div class="def-term">Outsourcing</div>
-      <div class="def-body">Contracting a <em>third-party organisation</em> to perform a function previously done in-house. Focus: <em>who does the work</em> (external party). Can be domestic or international.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Offshoring</div>
-      <div class="def-body">Moving a business process to a <em>different country</em>. Focus: <em>where the work is done</em>. Can be through your own subsidiary or a foreign vendor. Does NOT have to involve an external party.</div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Captive Offshoring</div>
-      <div class="def-body">Company sets up its <em>own operations in a foreign country</em> — still in-house, just relocated abroad. <span class="tag">Micron (US) → own analytics team in India</span></div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Offshore Outsourcing</div>
-      <div class="def-body">Contracting a <em>foreign company</em> to perform work. Both offshored AND outsourced. <span class="tag">Western Australia agency → TCS Pune, India</span></div>
-    </div>
-    <div class="def-block">
-      <div class="def-term">Domestic Outsourcing</div>
-      <div class="def-body">Contracting a third party within the <em>same country</em>. Outsourcing but NOT offshoring. <span class="tag">Tata Motors → TACO group (both India)</span></div>
-    </div>
-
-    <table class="comp-table">
-      <tr><th>Scenario</th><th>Classification</th><th>Offshoring?</th><th>Outsourcing?</th></tr>
-      <tr><td>Micron (US) → own team in India</td><td class="highlight">Captive Offshoring</td><td class="good">Yes</td><td class="bad">No (own team)</td></tr>
-      <tr><td>Micron → TSMC Taiwan (contract)</td><td class="highlight">Foreign Outsourcing</td><td class="bad">No*</td><td class="good">Yes</td></tr>
-      <tr><td>W. Australia agency → TCS Pune</td><td class="highlight">Offshore Outsourcing</td><td class="good">Yes</td><td class="good">Yes</td></tr>
-      <tr><td>Tata Motors → TACO group</td><td class="highlight">Domestic Outsourcing</td><td class="bad">No</td><td class="good">Yes</td></tr>
+    <table class="tbl">
+      <tr><th>Scenario</th><th>Type</th><th>Offshoring?</th><th>Outsourcing?</th></tr>
+      <tr><td>Micron (US) → own team in India</td><td class="hl">Captive Offshoring</td><td class="good">Yes</td><td class="bad">No</td></tr>
+      <tr><td>Micron → TSMC Taiwan (contract)</td><td class="hl">Foreign Outsourcing</td><td class="bad">No*</td><td class="good">Yes</td></tr>
+      <tr><td>W. Australia → TCS Pune</td><td class="hl">Offshore Outsourcing</td><td class="good">Yes</td><td class="good">Yes</td></tr>
+      <tr><td>Tata Motors → TACO group</td><td class="hl">Domestic Outsourcing</td><td class="bad">No</td><td class="good">Yes</td></tr>
     </table>
-    <div class="note-strip">* Classified as outsourcing (foreign vendor) in the paper's context — not offshoring of own operations</div>
-
-    <div class="callout" style="margin-top:12px;">
-      <strong>Quick test:</strong> Is the work in another country? → Offshoring. Is it done by a third party? → Outsourcing. Both? → Offshore Outsourcing. Same country + third party? → Domestic Outsourcing only.
-    </div>
+    <div class="callout i4" style="margin-top:10px"><strong>Quick test:</strong> Different country? → Offshoring. Third party? → Outsourcing. Both? → Offshore Outsourcing. Same country + third party? → Domestic Outsourcing only.</div>
   </div>
 
-
-  <!-- 05 QUICK REVISION -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">05</span>
-      <span class="section-title">Quick Revision — Rules &amp; Memory Aids</span>
-    </div>
-
+  <!-- 05 QUICK REF -->
+  <div class="section i4">
+    <div class="sec-hdr"><span class="sec-num">05</span><span class="sec-title">Quick Reference</span></div>
     <div class="two-col">
       <div>
-        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">Which Layout to Choose?</div>
-        <div style="font-size:0.84rem; line-height:2.1;">
-          1 product, millions of units → <strong style="color:var(--blue)">Product Layout</strong><br>
-          Many unique products, few units → <strong style="color:var(--rust)">Process Layout</strong><br>
-          Product families, shared parts → <strong style="color:var(--gold)">Group Layout</strong><br>
-          Product can't move (ships, bridges) → <strong style="color:var(--mid)">Fixed Position</strong>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px">Which Layout?</div>
+        <div style="font-size:.84rem;line-height:2.1">
+          1 product, high volume → <strong style="color:var(--i-blue)">Product Layout</strong><br>
+          Many custom products, low vol → <strong style="color:var(--i-rust)">Process Layout</strong><br>
+          Product families, shared parts → <strong style="color:var(--i-gold)">Group Layout</strong><br>
+          Product can't move → <strong style="color:var(--mid)">Fixed Position</strong>
         </div>
-
-        <div style="margin-top:16px;">
-        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">Assembly Line Rules</div>
-        <div style="font-size:0.84rem; line-height:2.1;">
-          Production rate → determined by <strong style="color:var(--rust)">slowest station</strong><br>
-          Always true: <strong style="color:var(--teal)">E% + BD% = 100%</strong><br>
-          Valid CT range: <strong style="color:var(--blue)">C<sub>min</sub> ≤ CT ≤ C<sub>max</sub></strong><br>
-          Feasible if: <strong style="color:var(--teal)">CT<sub>req</sub> ≥ C<sub>min</sub></strong>
-        </div>
+        <div style="margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px">Assembly Line Rules</div>
+        <div style="font-size:.84rem;line-height:2.1">
+          Rate set by → <strong style="color:var(--i-rust)">slowest station</strong><br>
+          E% + BD% = <strong style="color:var(--i-teal)">100%</strong> always<br>
+          Valid CT: <strong>C<sub>min</sub> ≤ CT ≤ C<sub>max</sub></strong><br>
+          Feasible if: <strong style="color:var(--i-teal)">CT<sub>req</sub> ≥ C<sub>min</sub></strong>
         </div>
       </div>
-
       <div>
-        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">Location Method Differences</div>
-        <div style="font-size:0.84rem; line-height:2.1;">
-          <strong style="color:var(--blue)">CoG</strong> → weighted average coordinates. Fast, approximate.<br>
-          <strong style="color:var(--rust)">Euclidean</strong> → minimise straight-line distance. Exact point. Rarely = CoG.<br>
-          <strong style="color:var(--gold)">Cross-Median</strong> → weighted median of x &amp; y. Manhattan distance.
-        </div>
-
-        <div style="margin-top:16px;">
-        <div class="example-label" style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">All Formulas at a Glance</div>
-        <div style="font-family:'IBM Plex Mono',monospace; font-size:0.78rem; line-height:2; background:white; padding:10px 12px; border:1px solid var(--rule);">
-          CT = T<sub>avail</sub> / Q<br>
-          C<sub>min</sub> = max(t<sub>i</sub>) &nbsp;|&nbsp; C<sub>max</sub> = Σt<sub>i</sub><br>
-          N<sub>min</sub> = ⌈ Σt<sub>i</sub> / C ⌉<br>
-          BD = (N·C − Σt<sub>i</sub>) / (N·C)<br>
-          E  = Σt<sub>i</sub> / (N·C) × 100<br>
-          Feasible: CT<sub>req</sub> ≥ C<sub>min</sub>
-        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px">All Formulas</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.78rem;line-height:2;background:#fff;padding:10px 12px;border:1px solid var(--rule)">
+          CT = T_avail / Q<br>
+          C_min = max(tᵢ) &nbsp;|&nbsp; C_max = Σtᵢ<br>
+          N_min = ⌈ Σtᵢ / C ⌉<br>
+          BD = (N·C − Σtᵢ) / (N·C)<br>
+          E = Σtᵢ / (N·C) × 100<br>
+          Feasible: CT_req ≥ C_min
         </div>
       </div>
     </div>
   </div>
 
-  <div style="border-top: 2px solid var(--ink); padding-top: 12px; display:flex; justify-content:space-between;">
-    <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--mid); letter-spacing:1px; text-transform:uppercase;">Industry 4.0 · Cheat Sheet</div>
-    <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--mid);">Facility Layout · Assembly Line · Location · Outsourcing</div>
+  <div class="sheet-footer"><span>Industry 4.0 · Cheat Sheet</span><span>Facility Layout · Assembly Line · Location · Outsourcing</span></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  PANEL 2: LLM                                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel llm" id="panel-llm">
+<div class="page">
+
+  <div class="sheet-header">
+    <div>
+      <h1>Large Language <em style="color:var(--l-cyan)">Models</em></h1>
+      <div class="sub">Transformers · Attention · Positional Encoding · Decoding · Training</div>
+    </div>
+    <div class="meta">Topics · Definitions · Formulas<br>extracted from exam paper</div>
   </div>
 
+  <!-- 01 TRANSFORMER ARCHITECTURE -->
+  <div class="section llm">
+    <div class="sec-hdr"><span class="sec-num">01</span><span class="sec-title">Transformer Architecture — Core Concepts</span></div>
+    <div class="def-block"><div class="def-term">Token Embedding</div><div class="def-body">Converts discrete tokens (words/sub-words) into dense vectors. Used in <em>both encoder and decoder</em>. Maps vocabulary IDs to d<sub>model</sub>-dimensional space.</div></div>
+    <div class="def-block"><div class="def-term">Positional Encoding</div><div class="def-body">Added to token embeddings in <em>both encoder and decoder</em> to inject sequence order information. Transformers have no inherent sense of order without this.</div></div>
+    <div class="def-block"><div class="def-term">Sinusoidal Encoding</div><div class="def-body">Each position's encoding vector uses <em>sine for even dimensions</em> and <em>cosine for odd dimensions</em>. Both functions are used per position — NOT per word-position.</div></div>
+    <div class="def-block"><div class="def-term">Encoder</div><div class="def-body">Processes the full input sequence in parallel using <em>bidirectional self-attention</em>. Produces context-rich representations. Used in seq2seq models.</div></div>
+    <div class="def-block"><div class="def-term">Decoder</div><div class="def-body">Generates output tokens <em>auto-regressively</em> (one at a time). Uses masked self-attention + cross-attention to encoder output. GPT-style models are decoder-only.</div></div>
+    <div class="def-block"><div class="def-term">Look-Ahead Mask</div><div class="def-body">Applied in <em>every decoder self-attention layer</em> (not just the first). Prevents each position from attending to future tokens. Future scores set to −∞ before softmax.</div></div>
+    <div class="def-block"><div class="def-term">Masked Self-Attention</div><div class="def-body">For token x<sub>k</sub> at position k, only positions 1…k are visible. Future positions masked to <em>−∞</em> so softmax assigns them zero weight.</div></div>
+
+    <div class="callout llm"><strong>Key architecture facts:</strong> Token embeddings → <strong>both</strong> encoder &amp; decoder. Positional encoding → <strong>both</strong> encoder &amp; decoder. Look-ahead mask → <strong>every</strong> decoder self-attention layer, not just the first.</div>
+  </div>
+
+  <!-- 02 ATTENTION MECHANISM -->
+  <div class="section llm">
+    <div class="sec-hdr"><span class="sec-num">02</span><span class="sec-title">Attention Mechanism &amp; Multi-Head Attention</span></div>
+    <div class="def-block"><div class="def-term">Scaled Dot-Product Attention</div><div class="def-body">Attention(Q,K,V) = softmax(QKᵀ / √d<sub>k</sub>) · V. Dividing by <em>√d<sub>k</sub></em> prevents dot products from growing too large, which would push softmax into regions with <em>vanishing gradients</em>.</div></div>
+    <div class="def-block"><div class="def-term">Why divide by √d<sub>k</sub>?</div><div class="def-body">To <em>avoid numerical issues and vanishing gradients</em> during training. Large dot products → extreme softmax outputs → near-zero gradients → slow/failed learning.</div></div>
+    <div class="def-block"><div class="def-term">Query (Q), Key (K), Value (V)</div><div class="def-body">Each input is projected into three separate spaces. Q × Kᵀ computes <em>compatibility scores</em>. Softmax normalises them. V is aggregated by these weights.</div></div>
+    <div class="def-block"><div class="def-term">Multi-Head Attention</div><div class="def-body">Runs h parallel attention heads, each with its own Q/K/V projections. Outputs concatenated and projected by W<sub>O</sub>. <em>Allows learning diverse local and global relations</em> simultaneously.</div></div>
+    <div class="def-block"><div class="def-term">Head Dimensionality</div><div class="def-body">When number of heads h increases while keeping d<sub>model</sub> fixed, <em>each head's dimension d<sub>k</sub> = d<sub>model</sub>/h decreases</em>. More heads = narrower per-head attention.</div></div>
+    <div class="def-block"><div class="def-term">Attention Score Matrix</div><div class="def-body">For sequence length T with causal masking, each sequence has T×T scores but only the lower-triangular (including diagonal) are non-zero = <em>T(T+1)/2 non-zero scores per head</em>.</div></div>
+
+    <div class="fbox llm">
+      <div class="fbox-title">Formulas — Attention &amp; Parameters</div>
+      <div class="fgrid">
+        <div><div class="flabel">Scaled Dot-Product</div><div class="fexpr">softmax(QKᵀ / √d_k) · V</div></div>
+        <div><div class="flabel">Head dimension</div><div class="fexpr">d_k = d_model / h</div><div class="fnote">h = number of heads</div></div>
+        <div><div class="flabel">Scalar attention scores (1 pass)</div><div class="fexpr">B × h × T × T</div><div class="fnote">B=batch, h=heads, T=seq length</div></div>
+        <div><div class="flabel">Q projection matrix size</div><div class="fexpr">d_model × d_k</div><div class="fnote">= d_model × (d_model/h)</div></div>
+        <div><div class="flabel">W_O output projection</div><div class="fexpr">(h × d_v) × d_model</div><div class="fnote">= d_model × d_model</div></div>
+        <div><div class="flabel">Non-zero scores (causal, per head)</div><div class="fexpr">T(T+1) / 2</div><div class="fnote">Lower-triangular including diagonal</div></div>
+      </div>
+    </div>
+
+    <div class="ex-box llm">
+      <div class="ex-label">Worked Examples — from paper</div>
+      <div class="ex-steps">
+        Q166: B=4, T=12, h=2 → total scalar scores = 4 × 2 × 12 × 12 = <span class="ans">1152</span><br>
+        Q168: d_model=512, h=8, d_k=64 → Q matrix params = 512 × 64 = <span class="ans">32768</span><br>
+        ────────────────────────────────────────────────────────<br>
+        GPT setup (Q169-171): T=1024, B=32, d_model=768, h=8, d_v=96<br>
+        Q169: next-token targets = B × (T−1) = 32 × 1023 = <span class="ans">32736</span><br>
+        Q170: non-zero attn scores per head = T(T+1)/2 = 1024×1025/2 = <span class="ans">524800</span><br>
+        Q171: W_O params = (h × d_v) × d_model = 768 × 768 = <span class="ans">589824</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 TRAINING CONCEPTS -->
+  <div class="section llm">
+    <div class="sec-hdr"><span class="sec-num">03</span><span class="sec-title">Training — Teacher Forcing &amp; Language Modelling</span></div>
+    <div class="def-block"><div class="def-term">Teacher Forcing</div><div class="def-body">During training, the <em>correct ground-truth token</em> from the training data is fed as input for each next time step — regardless of what the model predicted. Speeds up and stabilises training.</div></div>
+    <div class="def-block"><div class="def-term">Decoder Input (teacher forcing)</div><div class="def-body">At time step t, the decoder input is the <em>ground-truth token from position t−1</em>. Example: if target = [je, suis, heureux], at t=3 the input is 'suis' (t=2 ground truth).</div></div>
+    <div class="def-block"><div class="def-term">Causal Language Modelling</div><div class="def-body">Next-token prediction. Each token in a sequence of length T generates one prediction target (except the last). For T tokens: <em>T−1 prediction targets per sequence</em>.</div></div>
+    <div class="def-block"><div class="def-term">Autoregressive Inference</div><div class="def-body">At inference (GPT), each new token is <em>conditioned on all previously generated tokens</em>. Generation is sequential — no teacher forcing. Decoding strategies choose each next token.</div></div>
+    <div class="def-block"><div class="def-term">Batch Normalisation</div><div class="def-body">Normalises each feature across the batch. For feature column: subtract batch mean, divide by batch std (ε=0). With γ=1, β=0: normalised values are z-scores across the batch dimension.</div></div>
+
+    <div class="callout llm"><strong>Teacher forcing vs inference:</strong> Training uses teacher forcing (ground-truth inputs) → fast, stable. Inference is autoregressive (model's own outputs as next inputs) → error can accumulate (exposure bias).</div>
+  </div>
+
+  <!-- 04 DECODING STRATEGIES -->
+  <div class="section llm">
+    <div class="sec-hdr"><span class="sec-num">04</span><span class="sec-title">Decoding Strategies</span></div>
+    <div class="def-block"><div class="def-term">Greedy Search</div><div class="def-body">At each step, picks the <em>single highest-probability token</em>. Always 1 beam. Fast but suboptimal — can miss better sequences. <em>Deterministic</em>.</div></div>
+    <div class="def-block"><div class="def-term">Beam Search</div><div class="def-body">Keeps the top-k (beam size) partial sequences at each step. <em>Deterministic</em> — always keeps the same top-k. Beam search with size 2 always keeps <em>both top-2</em> sequences.</div></div>
+    <div class="def-block"><div class="def-term">Exhaustive (Exact) Decoding</div><div class="def-body">Evaluates <em>all possible sequences</em>. At step t with vocab size V: V<sup>t</sup> candidates. Computationally infeasible for large V or t. <em>Deterministic</em>.</div></div>
+    <div class="def-block"><div class="def-term">Nucleus (Top-p) Sampling</div><div class="def-body">Samples from the smallest set of tokens whose cumulative probability ≥ p. <em>Inherently non-deterministic</em> — introduces randomness via sampling.</div></div>
+    <div class="def-block"><div class="def-term">Top-k Sampling</div><div class="def-body">Restricts choices to top-k tokens, then <em>samples one probabilistically</em>. Non-deterministic. Top-2 sampling picks 1 token from the top 2 by sampling, not greedily.</div></div>
+    <div class="def-block"><div class="def-term">Savings Heuristic (TSP)</div><div class="def-body">A heuristic for Travelling Salesman Problem. Tries each city as base (fulcrum) and computes a tour. <em>Always terminates</em> (finite cities). <em>Not suitable for computing the optimal TSP tour</em> — it's a heuristic.</div></div>
+
+    <table class="tbl">
+      <tr><th>Strategy</th><th>Beams at step 1 (V=10)</th><th>Beams at step 3</th><th>Deterministic?</th></tr>
+      <tr><td class="hl">Greedy</td><td>1</td><td>1</td><td class="yes">Yes</td></tr>
+      <tr><td class="hl">Beam (size=3)</td><td>3</td><td>3</td><td class="yes">Yes</td></tr>
+      <tr><td class="hl">Exhaustive</td><td>10 (=V)</td><td>1000 (=V³)</td><td class="yes">Yes</td></tr>
+      <tr><td class="hl">Nucleus / Top-k Sampling</td><td>—</td><td>—</td><td class="no">No (random)</td></tr>
+    </table>
+
+    <div class="callout llm"><strong>Beam vs Top-k sampling:</strong> Beam search with size 2 → always keeps <strong>both</strong> top-2 candidates (deterministic). Top-2 sampling → restricts to top 2 tokens then samples <strong>one</strong> probabilistically (non-deterministic).</div>
+  </div>
+
+  <!-- 05 SEQUENCES & COMPLEXITY -->
+  <div class="section llm">
+    <div class="sec-hdr"><span class="sec-num">05</span><span class="sec-title">Sequences, Vocabulary &amp; Complexity</span></div>
+    <div class="def-block"><div class="def-term">Sequences of max length L</div><div class="def-body">With vocabulary size |V|, total sequences of max length L = Σ<sub>k=1</sub><sup>L</sup> V<sup>k</sup>. This counts sequences of length 1, 2, …, L.</div></div>
+    <div class="def-block"><div class="def-term">Exhaustive decoding growth</div><div class="def-body">Going from length L to L+1 adds <em>(V−1)·V<sup>L</sup></em> additional sequences to evaluate. (Not V<sup>L</sup> — those already existed.)</div></div>
+    <div class="def-block"><div class="def-term">Attention score memory</div><div class="def-body">Each score is 32-bit float (4 bytes). Total memory = h × T² × 4 bytes per sequence. Doubling heads doubles memory linearly.</div></div>
+
+    <div class="fbox llm">
+      <div class="fbox-title">Key Formulas — Sequences &amp; Memory</div>
+      <div class="fgrid">
+        <div><div class="flabel">Total sequences (max length L)</div><div class="fexpr">Σ V^k for k=1 to L</div></div>
+        <div><div class="flabel">Extra seqs (L → L+1)</div><div class="fexpr">(V − 1) · V^L</div></div>
+        <div><div class="flabel">Attention score memory (per seq)</div><div class="fexpr">h × T² × 4 bytes</div></div>
+        <div><div class="flabel">Training targets (full batch)</div><div class="fexpr">B × (T − 1)</div><div class="fnote">Each token except last predicts next</div></div>
+      </div>
+    </div>
+
+    <div class="ex-box llm">
+      <div class="ex-label">Q167 — Memory comparison worked example</div>
+      <div class="ex-steps">
+        T=1000, float32=4 bytes, 1 MB=10⁶ bytes<br>
+        Model A (h=8):  8 × 1000² × 4 = 32,000,000 bytes = 32 MB<br>
+        Model B (h=16): 16 × 1000² × 4 = 64,000,000 bytes = 64 MB<br>
+        % increase = (64−32)/32 × 100 = <span class="ans">100%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 QUICK REF -->
+  <div class="section llm">
+    <div class="sec-hdr"><span class="sec-num">06</span><span class="sec-title">Quick Reference — Rules to Remember</span></div>
+    <div class="two-col">
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px">Architecture Facts</div>
+        <div style="font-size:.84rem;line-height:2.1">
+          Token embeddings → <strong style="color:var(--l-purple)">encoder AND decoder</strong><br>
+          Positional encoding → <strong style="color:var(--l-purple)">encoder AND decoder</strong><br>
+          Look-ahead mask → <strong style="color:var(--l-orange)">every decoder self-attn layer</strong><br>
+          Sinusoidal → <strong style="color:var(--l-cyan)">sin=even dims, cos=odd dims</strong><br>
+          √d_k scaling → <strong style="color:var(--l-orange)">prevent vanishing gradients</strong>
+        </div>
+        <div style="margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px">Decoding Rules</div>
+        <div style="font-size:.84rem;line-height:2.1">
+          Only non-deterministic → <strong style="color:var(--l-orange)">Nucleus / sampling</strong><br>
+          Beam keeps → <strong>top-k deterministically</strong><br>
+          Top-k sampling → <strong>samples 1 from top-k</strong><br>
+          Savings heuristic → <strong style="color:var(--l-orange)">always terminates, not optimal</strong>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px">All Formulas at a Glance</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.78rem;line-height:2;background:#fff;padding:10px 12px;border:1px solid var(--rule)">
+          Attention = softmax(QKᵀ/√d_k)·V<br>
+          d_k = d_model / h<br>
+          Scores (1 pass) = B × h × T × T<br>
+          Q params = d_model × d_k<br>
+          W_O params = d_model × d_model<br>
+          Non-zero causal scores = T(T+1)/2<br>
+          Train targets = B × (T−1)<br>
+          Total seqs (max L) = Σ V^k, k=1..L<br>
+          Extra seqs (L→L+1) = (V−1)·V^L
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet-footer"><span>LLM · Cheat Sheet</span><span>Transformers · Attention · Decoding · Training</span></div>
 </div>
+</div>
+
+<script>
+function switchTab(which, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-i4','active-llm'));
+  document.getElementById('panel-' + which).classList.add('active');
+  btn.classList.add('active-' + which);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
 </body>
 </html>
