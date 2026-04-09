@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Industry 4.0 — Quiz 2 Cheatsheet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf8f4;
+      --surface: #fff;
+      --border: #e8e2d9;
+      --accent: #c0392b;
+      --accent2: #2471a3;
+      --accent3: #1e8449;
+      --text: #1a1612;
+      --muted: #7a6e62;
+      --highlight: #fef9e7;
+      --warn: #fdebd0;
+      --good: #eafaf1;
+      --code-bg: #f0ebe3;
+      --sidebar-w: 240px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ─── TOP BAR ─── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--text);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.6rem 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+    }
+
+    .topbar-home {
+      color: #aaa;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.15s;
+    }
+    .topbar-home:hover { color: #fff; }
+
+    .topbar-sep { color: #555; }
+
+    .topbar-title {
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    .topbar-search {
+      margin-left: auto;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 3px;
+      width: 180px;
+      outline: none;
+      transition: border-color 0.2s, width 0.3s;
+    }
+    .topbar-search:focus { border-color: var(--accent); width: 240px; }
+    .topbar-search::placeholder { color: #555; }
+
+    /* ─── LAYOUT ─── */
+    .layout {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* ─── SIDEBAR / TOC ─── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: sticky;
+      top: 41px;
+      height: calc(100vh - 41px);
+      overflow-y: auto;
+      padding: 2rem 1rem 2rem 0;
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .toc-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .toc-list { list-style: none; }
+
+    .toc-list li a {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.28rem 0.5rem;
+      border-left: 2px solid transparent;
+      line-height: 1.4;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .toc-list li a:hover { color: var(--accent); border-left-color: var(--accent); }
+    .toc-list li a.active { color: var(--text); border-left-color: var(--accent); font-weight: 500; }
+
+    /* ─── MAIN CONTENT ─── */
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 2.5rem 0 4rem 2.5rem;
+    }
+
+    .doc-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--text);
+    }
+
+    .doc-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .doc-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    /* ─── SECTIONS ─── */
+    .section {
+      margin-bottom: 3rem;
+      padding-top: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2 .sec-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 1.4rem 0 0.6rem;
+    }
+
+    p { margin-bottom: 0.8rem; }
+
+    /* ─── TABLES ─── */
+    .tbl-wrap { overflow-x: auto; margin: 1rem 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      font-family: 'DM Mono', monospace;
+    }
+
+    th {
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.5rem 0.8rem;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    tr:nth-child(even) td { background: #faf6f0; }
+    tr:hover td { background: var(--highlight); }
+
+    /* ─── CALLOUTS ─── */
+    .callout {
+      border-left: 3px solid;
+      padding: 0.7rem 1rem;
+      margin: 1rem 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.88rem;
+    }
+    .callout-tip   { border-color: var(--accent3); background: var(--good); }
+    .callout-warn  { border-color: #e67e22; background: var(--warn); }
+    .callout-info  { border-color: var(--accent2); background: #eaf4fb; }
+    .callout-key   { border-color: var(--accent); background: #fdf2f2; }
+
+    .callout strong { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.2rem; }
+
+    /* ─── FORMULA BLOCK ─── */
+    .formula-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0;
+      border-radius: 0 4px 4px 0;
+      overflow-x: auto;
+    }
+
+    /* ─── STEP LIST ─── */
+    .steps { list-style: none; counter-reset: step; margin: 0.5rem 0 1rem; }
+    .steps li { counter-increment: step; display: flex; gap: 0.8rem; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .steps li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 1.4rem;
+      height: 1.4rem;
+      background: var(--text);
+      color: var(--bg);
+      border-radius: 50%;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.15rem;
+    }
+
+    /* ─── ANSWER KEY ─── */
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+    }
+
+    .answer-item {
+      display: flex;
+      gap: 0.7rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .answer-q {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      align-self: flex-start;
+      margin-top: 0.05rem;
+    }
+
+    .answer-divider {
+      grid-column: 1 / -1;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.4rem 0;
+      border-top: 1px solid var(--border);
+      margin-top: 0.3rem;
+    }
+
+    /* ─── HIGHLIGHT ─── */
+    mark { background: #fff176; padding: 0 2px; border-radius: 2px; }
+    .hidden { display: none !important; }
+
+    code {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.83em;
+      background: var(--code-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      main { padding: 1.5rem 0 3rem; }
+      .layout { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="../index.html" class="topbar-home">← Hub</a>
+  <span class="topbar-sep">/</span>
+  <span class="topbar-title">Quiz 2 Cheatsheet</span>
+  <input class="topbar-search" type="search" placeholder="Search..." id="searchBox" />
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR TOC -->
+  <nav class="sidebar" aria-label="Table of contents">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list" id="tocList">
+      <li><a href="#s1">1. Retail &amp; Consumer Behaviour</a></li>
+      <li><a href="#s2">2. Inventory Cost Categories</a></li>
+      <li><a href="#s3">3. EOQ — Economic Order Quantity</a></li>
+      <li><a href="#s4">4. EOQ Worked Problem</a></li>
+      <li><a href="#s5">5. Newsvendor Model</a></li>
+      <li><a href="#s6">6. Revenue Management</a></li>
+      <li><a href="#s7">7. Dynamic Programming — Inventory</a></li>
+      <li><a href="#s8">8. Dynamic Programming — Shortest Path</a></li>
+      <li><a href="#s9">9. Forecasting</a></li>
+      <li><a href="#s10">10. Order-Up-To Level</a></li>
+      <li><a href="#s11">11. Sunk Cost</a></li>
+      <li><a href="#s12">12. Newsvendor Assumptions</a></li>
+      <li><a href="#s13">13. K-Means Clustering</a></li>
+      <li><a href="#s14">14. Formula Quick Reference</a></li>
+      <li><a href="#s15">15. Answer Key</a></li>
+    </ul>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="mainContent">
+
+    <div class="doc-header">
+      <div class="doc-tag">Quiz 2 · Industry 4.0</div>
+      <h1 class="doc-title">Complete Cheatsheet</h1>
+      <div class="doc-meta">EOQ · Newsvendor · Revenue Mgmt · Dynamic Programming · Forecasting · K-Means</div>
+    </div>
+
+    <!-- ─── SECTION 1 ─── -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 🛒 Retail &amp; Consumer Behaviour</h2>
+
+      <h3>Channel Types</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Term</th><th>Definition</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Omni-channel</strong></td><td>Seamless integration of ALL channels — online + offline unified experience</td><td>Order on Amazon, collect from showroom · Walgreen app (manage Rx, find deals, pick up in-store)</td></tr>
+          <tr><td><strong>Multi-channel</strong></td><td>Multiple independent channels exist but are NOT integrated</td><td>Separate online store &amp; physical store with no linkage</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Product Relationship Types</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Term</th><th>Definition</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Complementary product</strong></td><td>Two products used together — buying one raises demand for the other</td><td>Phone + phone cover · Tea + milk powder</td></tr>
+          <tr><td><strong>Substitution product</strong></td><td>One product replaces another</td><td>Good-day biscuits → Sun-fist biscuits when unavailable</td></tr>
+          <tr><td><strong>Impulse buying</strong></td><td>Unplanned purchase triggered by seeing the product</td><td>Buying candy bar at checkout suddenly craving it</td></tr>
+          <tr><td><strong>Inventory-dependent demand</strong></td><td>Demand influenced by visible stock quantity</td><td>Buying 10 Sun-fist packets because many were on shelf</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>🧠 Scenario Mapping (Exam Q251 &amp; Q170)</h3>
+      <div class="callout callout-key">
+        <strong>Paper 1 — Q251</strong>
+        Tea→Coffee = <mark>Complementary (S1)</mark> · Tea→Milk-powder = <mark>Substitution (S2)</mark> · Good-day→Sun-fist = <mark>Inventory-dependent (S3)</mark><br/>
+        <strong>Answer: P1-S2, P2-S1, P3-S3 ✅</strong>
+      </div>
+      <div class="callout callout-key">
+        <strong>Paper 2 — Q170</strong>
+        a.1 Walgreen app = <mark>Omni-channel (b.4)</mark> · a.2 Candy bar craving = <mark>Impulse buying (b.1)</mark> · a.3 Phone+cover = <mark>Complementary (b.3)</mark><br/>
+        <strong>Answer: a.1:b.4, a.2:b.1, a.3:b.3 ✅</strong>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 2 ─── -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 📦 Inventory Cost Categories</h2>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Cost Type</th><th>What it includes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ordering cost</strong></td><td>Fixed cost per order placed · Cost of processing order · Inspection of incoming products · Transportation from supplier</td></tr>
+          <tr><td><strong>Carrying / Holding cost</strong></td><td>Storage · Obsolescence of product · Insurance · Capital tied up in inventory</td></tr>
+          <tr><td><strong>Shortage cost</strong></td><td>Loss of customer goodwill · Cost of losing a customer permanently · Loss of profit from not delivering</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout callout-warn">
+        <strong>⚠ Exam Traps</strong>
+        ❌ "Loss due to customer return" is NOT shortage cost — it's a quality/returns cost.<br/>
+        ❌ Sunk costs (e.g. broken machine that can't be returned) are IRRELEVANT to inventory decisions.<br/>
+        ✅ Cost mapping: Inspection of incoming products → <mark>Ordering cost</mark> · Obsolescence → <mark>Carrying cost</mark> · Lost goodwill → <mark>Shortage cost</mark>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 3 ─── -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 📐 EOQ — Economic Order Quantity</h2>
+
+      <h3>Core Formula</h3>
+      <div class="formula-block">
+        \[ Q^* = \sqrt{\frac{2DS}{H}} \]
+        <p style="font-family:'DM Mono',monospace;font-size:0.8rem;margin-top:0.5rem;color:#555;">
+          D = Annual demand (units/yr) · S = Ordering cost per order · H = Holding cost per unit per year
+        </p>
+      </div>
+
+      <h3>Key Derived Quantities</h3>
+      <div class="formula-block">
+        \[ N = \frac{D}{Q^*} \quad \text{(orders/year)} \]
+        \[ \text{Avg Inventory} = \frac{Q^*}{2} \]
+        \[ TC = \frac{DS}{Q} + \frac{QH}{2} \quad \text{(total annual cost)} \]
+      </div>
+
+      <div class="callout callout-tip">
+        <strong>💡 Golden Rule</strong>
+        At EOQ, Annual Ordering Cost = Annual Carrying Cost. They are always equal at Q*.
+      </div>
+
+      <h3>EOQ Graph Labels — MEMORISE (Q250)</h3>
+      <div class="callout callout-info">
+        <strong>Figure Labels</strong>
+        A (Y-axis) = <mark>Cost</mark> · B (X-axis) = <mark>Quantity</mark> · C (U-curve top) = <mark>Total Cost</mark><br/>
+        D (falling curve) = <mark>Order cost</mark> · E (rising line) = <mark>Carrying cost</mark> · F (X-axis min point) = <mark>EOQ (Q*)</mark><br/><br/>
+        <strong>✅ Answer: A=Cost, B=Qty, C=Total cost, D=Order cost, E=Carrying cost, F=EOQ(Q*)</strong>
+      </div>
+
+      <h3>EOQ Error Calculation (Q249 &amp; Q163)</h3>
+      <div class="formula-block">
+        \[ \text{Error (\%)} = \frac{Q_{estimated} - Q_{actual}}{Q_{actual}} \times 100 \]
+      </div>
+
+      <p><strong>Worked example (same in both papers):</strong></p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Parameter</th><th>Estimate</th><th>Actual</th></tr></thead>
+        <tbody>
+          <tr><td>Annual demand (D)</td><td>1000 units</td><td>2000 units</td></tr>
+          <tr><td>Holding cost (H)</td><td>$10</td><td>$20</td></tr>
+          <tr><td>Ordering cost (S)</td><td>$50</td><td>$25</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="formula-block">
+        \[ Q_{est} = \sqrt{\frac{2 \times 1000 \times 50}{10}} = \sqrt{10000} = 100 \]
+        \[ Q_{act} = \sqrt{\frac{2 \times 2000 \times 25}{20}} = \sqrt{5000} \approx 70.71 \]
+        \[ \text{Error} = \frac{100 - 70.71}{70.71} \times 100 \approx \mathbf{41.42\%} \]
+      </div>
+      <div class="callout callout-tip"><strong>✅ Answer</strong>~41 (acceptable range: 40–42)</div>
+    </div>
+
+    <!-- ─── SECTION 4 ─── -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 🏭 Slipline Co. — Full EOQ Problem (Q261–265)</h2>
+
+      <p><strong>Given:</strong> Demand = 1500 units/month → D = 18,000/yr · Unit cost = Rs.27 · S = Rs.150 · Carrying = 20% of unit cost → H = 0.20 × 27 = <strong>Rs.5.4/unit/yr</strong></p>
+
+      <div class="formula-block">
+        \[ Q^* = \sqrt{\frac{2 \times 18000 \times 150}{5.4}} = \sqrt{1{,}000{,}000} = \mathbf{1000 \text{ units}} \]
+        \[ N = \frac{18000}{1000} = \mathbf{18 \text{ orders/yr}} \]
+        \[ \text{Annual Ordering Cost} = 18 \times 150 = \mathbf{Rs.\ 2700} \]
+        \[ \text{Avg Inventory} = \frac{1000}{2} = \mathbf{500 \text{ units}} \]
+        \[ \text{Annual Carrying Cost} = 500 \times 5.4 = \mathbf{Rs.\ 2700} \]
+      </div>
+    </div>
+
+    <!-- ─── SECTION 5 ─── -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 🎯 Newsvendor Model (Critical Ratio)</h2>
+
+      <p>Used for <strong>single-period, uncertain demand</strong> (perishable goods, seasonal items). Order only once before demand is known.</p>
+
+      <h3>Formula</h3>
+      <div class="formula-block">
+        \[ CR = \frac{C_u}{C_u + C_o} \]
+        \[ Q^* = a + CR \times (b - a) \quad \text{for Uniform}[a, b] \text{ demand} \]
+        <p style="font-family:'DM Mono',monospace;font-size:0.8rem;margin-top:0.5rem;color:#555;">
+          C_u = understock cost = p − c (lost profit) · C_o = overstock cost = c − s (loss on unsold unit)<br/>
+          p = selling price · c = unit cost · s = salvage value
+        </p>
+      </div>
+
+      <h3>Left / Right Rule</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Condition</th><th>CR</th><th>Q* location</th></tr></thead>
+        <tbody>
+          <tr><td>C_o &lt; C_u (overstock cheaper)</td><td>&gt; 0.5</td><td>RIGHT of mean ✅</td></tr>
+          <tr><td>C_o &gt; C_u (understock cheaper)</td><td>&lt; 0.5</td><td>LEFT of mean</td></tr>
+          <tr><td>C_o = C_u</td><td>= 0.5</td><td>AT the mean</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Ramu's Diya Problem (Q258–260)</h3>
+      <p>Cost = Rs.1 · Selling price = Rs.2 · Salvage = Rs.0.50 · Demand ~ Uniform[800, 1000]</p>
+      <div class="formula-block">
+        \[ C_u = 2 - 1 = 1, \quad C_o = 1 - 0.5 = 0.5 \]
+        \[ CR = \frac{1}{1 + 0.5} = \frac{1}{1.5} \approx \mathbf{0.67} \]
+        \[ Q^* = 800 + 0.67 \times 200 \approx \mathbf{933 \text{ units}} \]
+      </div>
+      <div class="callout callout-tip"><strong>✅ Answers</strong>CR ≈ 0.67 · Q* ≈ 933 · C_o &lt; C_u so Q* is to the RIGHT of mean (900)</div>
+    </div>
+
+    <!-- ─── SECTION 6 ─── -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> ✈️ Revenue Management — Booking Limit &amp; Protection Level</h2>
+
+      <p>Used in airlines/hotels to decide how many seats to protect for high-fare passengers.</p>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Protection level (y*)</strong></td><td>Seats reserved for high-fare (business) passengers</td></tr>
+          <tr><td><strong>Booking limit (b*)</strong></td><td>Max seats sold to low-fare (economy) = Total − y*</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Formula</h3>
+      <div class="formula-block">
+        \[ CR = 1 - \frac{r_L}{r_H} \]
+        \[ y^* = a + CR \times (b - a) \quad \text{(protection level, high-fare demand} \sim U[a,b]) \]
+        \[ \text{Booking limit} = \text{Total seats} - y^* \]
+        <p style="font-family:'DM Mono',monospace;font-size:0.8rem;margin-top:0.5rem;color:#555;">
+          r_L = low-fare revenue · r_H = high-fare revenue
+        </p>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>🔗 Same Formula — Two Faces</strong>
+        The revenue management CR is the same newsvendor formula with C_u = r_H − r_L and C_o = r_L.<br/>
+        Substituting: C_u/(C_u+C_o) = (r_H−r_L)/r_H = <strong>1 − r_L/r_H</strong> ✅
+      </div>
+
+      <h3>Flight Problem (Q164–165)</h3>
+      <p>100 total seats · Economy = Rs.2500 · Business = Rs.7500 · Business demand ~ Uniform[10, 20]</p>
+      <div class="formula-block">
+        \[ CR = 1 - \frac{2500}{7500} = 1 - 0.333 = 0.667 \]
+        \[ y^* = 10 + 0.667 \times 10 \approx \mathbf{17 \text{ seats protected}} \]
+        \[ b^* = 100 - 17 = \mathbf{83 \text{ (booking limit)}} \]
+      </div>
+    </div>
+
+    <!-- ─── SECTION 7 ─── -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 🔄 Dynamic Programming — Inventory (Q252–253)</h2>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>DP Component</th><th>Inventory context</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Stage</strong></td><td>Each week</td></tr>
+          <tr><td><strong>State variable</strong></td><td><mark>Beginning inventory with warehouse in each week</mark> ✅</td></tr>
+          <tr><td><strong>Action set</strong></td><td><mark>How many units to purchase in a week</mark> ✅</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout callout-warn">
+        <strong>Exam Trap</strong>
+        State = what you HAVE (beginning inventory). Action = what you DO (how much to order). Don't confuse them.
+      </div>
+
+      <p><strong>Problem parameters (Q252–253):</strong></p>
+      <ul style="margin:0.5rem 0 0.5rem 1.5rem;font-size:0.9rem;line-height:1.8">
+        <li>Demand: Week 1=3, Week 2=4, Week 3=2, Week 4=4</li>
+        <li>Ordering cost = $4 (fixed, regardless of quantity)</li>
+        <li>Purchase cost = $2/unit · Holding = $0.50/unit/week</li>
+        <li>Max order/week = 5 units · Warehouse capacity = 4 units</li>
+      </ul>
+    </div>
+
+    <!-- ─── SECTION 8 ─── -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 🗺️ Dynamic Programming — Shortest Path (Q166–169)</h2>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>DP Component</th><th>Shortest path context</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Stage</strong></td><td>Each leg of the journey (1→{2,3,4}, then →{5,6}, then →7)</td></tr>
+          <tr><td><strong>State variable</strong></td><td><mark>The beginning city in every stage</mark> ✅</td></tr>
+          <tr><td><strong>Action set</strong></td><td><mark>The city Ramu should visit next in a stage</mark> ✅</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Network Distances (Fig-1)</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Arc</th><th>Distance</th><th>Arc</th><th>Distance</th></tr></thead>
+        <tbody>
+          <tr><td>1 → 2</td><td>7</td><td>2 → 5</td><td>12</td></tr>
+          <tr><td>1 → 3</td><td>8</td><td>3 → 5</td><td>8</td></tr>
+          <tr><td>1 → 4</td><td>5</td><td>3 → 6</td><td>9</td></tr>
+          <tr><td>5 → 7</td><td>9</td><td>4 → 6</td><td>7</td></tr>
+          <tr><td>6 → 7</td><td>6</td><td>4 → 5</td><td>13</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:0.83rem;color:var(--muted);font-family:'DM Mono',monospace;">⚠ No connection between City-2 and City-6.</p>
+
+      <h3>Backward Recursion</h3>
+      <div class="callout callout-info">
+        <strong>Stage 3 — f(city) = distance to city 7</strong>
+        f(5) = 9 · f(6) = 6
+      </div>
+      <div class="callout callout-info">
+        <strong>Stage 2 — min cost to reach city 7 from mid-cities</strong>
+        f(2): 2→5 only (no 2→6) = 12+9 = <strong>21</strong><br/>
+        f(3): min(3→5: 8+9=17, 3→6: 9+6=15) = <strong>15</strong> via node 6<br/>
+        f(4): min(4→6: 7+6=13, 4→5: 13+9=22) = <strong>13</strong> via node 6
+      </div>
+      <div class="callout callout-info">
+        <strong>Stage 1 — from city 1</strong>
+        1→2: 7+21=28 · 1→3: 8+15=23 · 1→4: 5+13=<strong>18</strong> ← minimum
+      </div>
+
+      <div class="callout callout-tip">
+        <strong>✅ Answers</strong>
+        Stage-2 objective function value = <mark>16</mark> (per exam key) · Optimal route = <mark>1 → 4 → 5 → 7</mark> · Total distance = 18
+      </div>
+    </div>
+
+    <!-- ─── SECTION 9 ─── -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 📈 Forecasting</h2>
+
+      <h3>Time Series Patterns</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Pattern</th><th>Description</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Trend</strong></td><td>Long-term upward/downward movement</td><td>Growing sales year-on-year</td></tr>
+          <tr><td><strong>Seasonal</strong></td><td>Regular repeating pattern within a year (&lt;1 yr cycle)</td><td>Ceiling fan sales peak in summer; tourist footfall at year-end</td></tr>
+          <tr><td><strong>Cyclic</strong></td><td>Irregular long-term wave (&gt;1 yr, economy-linked)</td><td><mark>Economic recession ✅</mark></td></tr>
+          <tr><td><strong>Random</strong></td><td>Unpredictable fluctuations</td><td>One-off events</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout callout-warn">
+        <strong>⚠ Classic Exam Traps</strong>
+        "Ceiling fan sales increase in winters" → <mark>Seasonal</mark> (NOT cyclic)<br/>
+        "Increased tourist footfall towards end of year" → <mark>Seasonal</mark> (NOT cyclic)<br/>
+        "Economic recession" → <mark>Cyclic ✅</mark>
+      </div>
+
+      <h3>Two Primary Tasks of Time Series Forecasting (Q256)</h3>
+      <ol style="margin:0.5rem 0 0.5rem 1.5rem;line-height:1.8;font-size:0.9rem;">
+        <li>✅ <strong>Identifying patterns</strong> in the data</li>
+        <li>✅ <strong>Discovering relationships</strong> amongst variables of interest</li>
+      </ol>
+      <p style="font-size:0.85rem;color:var(--muted);">❌ "Identify variables of interest" alone is NOT a primary task of time series forecasting.</p>
+
+      <h3>Exponential Smoothing (Q254)</h3>
+      <div class="formula-block">
+        \[ F_{t+1} = \alpha D_t + (1 - \alpha) F_t \]
+        <p style="font-family:'DM Mono',monospace;font-size:0.8rem;margin-top:0.5rem;color:#555;">
+          F_t = Forecast period t · D_t = Actual demand period t · α = smoothing constant (0&lt;α&lt;1)<br/>
+          Higher α → more responsive to recent data · Lower α → smoother forecast
+        </p>
+      </div>
+      <p style="font-size:0.85rem;">The other formula in exam — <code>F_t = μ − θ·ε_{t-1}</code> — is an ARMA/Moving Average model, NOT exponential smoothing.</p>
+    </div>
+
+    <!-- ─── SECTION 10 ─── -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 📋 Order-Up-To Level (Q172)</h2>
+
+      <p>Also called <strong>Base-stock policy</strong>. Used in periodic review inventory systems.</p>
+
+      <div class="formula-block">
+        \[ \text{Order-Up-To Level} = \text{Demand forecast during } (L + T) + \text{Safety stock} \]
+        \[ \text{Order qty} = \text{OUL} - \text{On-hand inventory} - \text{On-order inventory} \]
+        <p style="font-family:'DM Mono',monospace;font-size:0.8rem;margin-top:0.5rem;color:#555;">
+          L = Lead time · T = Review period
+        </p>
+      </div>
+
+      <div class="callout callout-tip">
+        <strong>✅ All 4 inputs required (Q172 — select ALL)</strong>
+        Sales forecast · Lead time · On-hand inventory · Safety stock
+      </div>
+    </div>
+
+    <!-- ─── SECTION 11 ─── -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 🏷️ Sunk Cost — Irrelevant to Inventory Decisions (Q171)</h2>
+
+      <p>A <strong>sunk cost</strong> is a cost already incurred that cannot be recovered. It must be ignored in future decisions.</p>
+
+      <div class="callout callout-key">
+        <strong>✅ Irrelevant cost (correct answer Q171)</strong>
+        "A company bought a machine that broke and could not be returned" = <mark>Sunk cost</mark> = IRRELEVANT to inventory management.
+      </div>
+
+      <p>The following ARE relevant inventory costs and should NOT be ignored:</p>
+      <ul style="margin:0.5rem 0 0.5rem 1.5rem;line-height:1.8;font-size:0.9rem;">
+        <li>Cost of processing an order from supplier (ordering cost)</li>
+        <li>Transportation cost from supplier to manufacturing site (ordering cost)</li>
+        <li>Carrying cost for holding items (holding cost)</li>
+      </ul>
+    </div>
+
+    <!-- ─── SECTION 12 ─── -->
+    <div class="section" id="s12">
+      <h2><span class="sec-num">12</span> 📰 Newsvendor Assumptions (Q173)</h2>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Assumption</th><th>Valid?</th></tr></thead>
+        <tbody>
+          <tr><td>Products are separable (each product decided independently)</td><td>✅ TRUE</td></tr>
+          <tr><td>Inventory decisions/deliveries made <strong>before</strong> demand is realized</td><td>✅ TRUE</td></tr>
+          <tr><td>Overstocking and understocking costs are <strong>linear</strong> to quantities</td><td>✅ TRUE</td></tr>
+          <tr><td>Demand is <strong>deterministic</strong></td><td>❌ FALSE — demand is stochastic/uncertain</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout callout-warn">
+        <strong>⚠ Key Trap</strong>
+        The entire point of the newsvendor model is to handle UNCERTAIN demand. "Demand is deterministic" is always FALSE for this model.
+      </div>
+    </div>
+
+    <!-- ─── SECTION 13 ─── -->
+    <div class="section" id="s13">
+      <h2><span class="sec-num">13</span> 🤖 K-Means Clustering (Q161)</h2>
+
+      <h3>Algorithm Steps</h3>
+      <ol class="steps">
+        <li>Choose <strong>k</strong> initial centroids (randomly or by heuristic)</li>
+        <li>Assign each data point to nearest centroid (by Euclidean distance)</li>
+        <li>Recompute each centroid as mean of all assigned points</li>
+        <li>Repeat steps 2–3 until centroids stop moving (convergence)</li>
+      </ol>
+
+      <h3>Properties — True / False (Q161)</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Statement</th><th>Exam Answer</th></tr></thead>
+        <tbody>
+          <tr><td>Requires initial centroids to be chosen randomly</td><td>✅ TRUE</td></tr>
+          <tr><td>May not find the globally optimal solution</td><td>❌ FALSE (per exam key)</td></tr>
+          <tr><td>Complexity is polynomial w.r.t. number of data points &amp; clusters</td><td>✅ TRUE</td></tr>
+          <tr><td>Can be used for higher-dimensional spaces</td><td>✅ TRUE</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout callout-tip">
+        <strong>✅ Correct TRUE answers (Q161)</strong>
+        Random initial centroids · Polynomial complexity · Works in higher dimensions
+      </div>
+
+      <h3>Centroid Calculation Example</h3>
+      <p>Points: (1,1), (2,3), (3,2) and (8,8), (7,6), (9,7) with k=2:</p>
+      <div class="formula-block">
+        Cluster 1 centroid = ((1+2+3)/3, (1+3+2)/3) = <strong>(2, 2)</strong><br/>
+        Cluster 2 centroid = ((8+7+9)/3, (8+6+7)/3) = <strong>(8, 7)</strong><br/>
+        Iterate until centroids don't change.
+      </div>
+
+      <h3>K-Means Result from Exam (paper before Q161)</h3>
+      <div class="callout callout-info">
+        <strong>Correct answer: 2 clusters, centroids (1.5, 2.5) and (7, 7)</strong><br/>
+        The number of iterations = 2
+      </div>
+    </div>
+
+    <!-- ─── SECTION 14 ─── -->
+    <div class="section" id="s14">
+      <h2><span class="sec-num">14</span> ⚡ Formula Quick Reference</h2>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Formula</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>\( Q^* = \sqrt{2DS/H} \)</td><td>EOQ — optimal order quantity</td></tr>
+          <tr><td>\( N = D / Q^* \)</td><td>Number of orders per year</td></tr>
+          <tr><td>\( TC = DS/Q + QH/2 \)</td><td>Total annual inventory cost</td></tr>
+          <tr><td>\( \text{Avg Inventory} = Q^*/2 \)</td><td>Average units held</td></tr>
+          <tr><td>\( \text{Error} = (Q_{est} - Q_{act}) / Q_{act} \)</td><td>EOQ estimation error (%)</td></tr>
+          <tr><td>\( CR = C_u / (C_u + C_o) \)</td><td>Newsvendor critical ratio (general)</td></tr>
+          <tr><td>\( Q^* = a + CR \cdot (b - a) \)</td><td>Optimal qty, Uniform[a,b] demand</td></tr>
+          <tr><td>\( CR = 1 - r_L/r_H \)</td><td>Revenue management critical ratio</td></tr>
+          <tr><td>\( y^* = a + CR \cdot (b - a) \)</td><td>Protection level (revenue mgmt)</td></tr>
+          <tr><td>\( b^* = \text{Total} - y^* \)</td><td>Booking limit (max low-fare seats)</td></tr>
+          <tr><td>\( F_{t+1} = \alpha D_t + (1-\alpha) F_t \)</td><td>Exponential smoothing forecast</td></tr>
+          <tr><td>\( \text{OUL} = \text{Forecast}(L+T) + \text{SS} \)</td><td>Order-Up-To level</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- ─── SECTION 15 ─── -->
+    <div class="section" id="s15">
+      <h2><span class="sec-num">15</span> 🃏 Answer Key</h2>
+
+      <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--muted);margin-bottom:1rem;">PAPER 1 — Questions 248–266</p>
+      <div class="answer-grid">
+        <div class="answer-item"><span class="answer-q">Q248</span>a.1:b.4, a.2:b.1, a.3:b.3</div>
+        <div class="answer-item"><span class="answer-q">Q249</span>~41 (range 40–42)</div>
+        <div class="answer-item"><span class="answer-q">Q250</span>A=Cost, B=Qty, C=Total cost, D=Order cost, E=Carrying cost, F=EOQ(Q*)</div>
+        <div class="answer-item"><span class="answer-q">Q251</span>P1-S2, P2-S1, P3-S3</div>
+        <div class="answer-item"><span class="answer-q">Q252</span>Beginning inventory in each week</div>
+        <div class="answer-item"><span class="answer-q">Q253</span>How many units to purchase in a week</div>
+        <div class="answer-item"><span class="answer-q">Q254</span>F_{t+1} = αD_t + (1−α)F_t</div>
+        <div class="answer-item"><span class="answer-q">Q255</span>Economic recession</div>
+        <div class="answer-item"><span class="answer-q">Q256</span>Identifying pattern + Discovering relationships</div>
+        <div class="answer-item"><span class="answer-q">Q257</span>Loss of goodwill + Cost of losing customer + Loss of profit from not delivering</div>
+        <div class="answer-item"><span class="answer-q">Q258</span>CR ≈ 0.67</div>
+        <div class="answer-item"><span class="answer-q">Q259</span>~933 units</div>
+        <div class="answer-item"><span class="answer-q">Q260</span>Towards right of the mean</div>
+        <div class="answer-item"><span class="answer-q">Q261</span>1000 units (EOQ)</div>
+        <div class="answer-item"><span class="answer-q">Q262</span>18 orders/year</div>
+        <div class="answer-item"><span class="answer-q">Q263</span>Rs. 2700 (annual ordering cost)</div>
+        <div class="answer-item"><span class="answer-q">Q264</span>500 units (avg inventory)</div>
+        <div class="answer-item"><span class="answer-q">Q265</span>Rs. 2700 (annual carrying cost)</div>
+        <div class="answer-item"><span class="answer-q">Q266</span>(1):b Ordering, (2):c Carrying, (3):a Shortage</div>
+
+        <div class="answer-divider">PAPER 2 — Questions 161–173</div>
+
+        <div class="answer-item"><span class="answer-q">Q161</span>TRUE: Random centroids + Polynomial complexity + Higher-dim spaces</div>
+        <div class="answer-item"><span class="answer-q">Q163</span>~41 (range 40–42)</div>
+        <div class="answer-item"><span class="answer-q">Q164</span>Booking limit = 83</div>
+        <div class="answer-item"><span class="answer-q">Q165</span>Protection level = 17</div>
+        <div class="answer-item"><span class="answer-q">Q166</span>State variable = Beginning city in every stage</div>
+        <div class="answer-item"><span class="answer-q">Q167</span>Action set = City to visit next in a stage</div>
+        <div class="answer-item"><span class="answer-q">Q168</span>Stage-2 objective function value = 16</div>
+        <div class="answer-item"><span class="answer-q">Q169</span>Optimal route: 1 → 4 → 5 → 7</div>
+        <div class="answer-item"><span class="answer-q">Q170</span>a.1:b.4, a.2:b.1, a.3:b.3</div>
+        <div class="answer-item"><span class="answer-q">Q171</span>Broken machine (sunk cost) = irrelevant</div>
+        <div class="answer-item"><span class="answer-q">Q172</span>ALL 4: Sales forecast + Lead time + On-hand inventory + Safety stock</div>
+        <div class="answer-item"><span class="answer-q">Q173</span>Products separable ✅ + Decisions before demand ✅ + Linear costs ✅ (NOT deterministic ❌)</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // ─── SEARCH ───
+  const searchBox = document.getElementById('searchBox');
+  const mainContent = document.getElementById('mainContent');
+
+  searchBox.addEventListener('input', () => {
+    const q = searchBox.value.trim().toLowerCase();
+    if (!q) { clearHighlights(); return; }
+    clearHighlights();
+    highlight(mainContent, q);
+  });
+
+  function highlight(node, query) {
+    if (node.nodeType === 3) {
+      const idx = node.textContent.toLowerCase().indexOf(query);
+      if (idx >= 0) {
+        const span = document.createElement('mark');
+        span.textContent = node.textContent.slice(idx, idx + query.length);
+        const after = node.splitText(idx);
+        after.splitText(query.length);
+        after.parentNode.replaceChild(span, after);
+        span.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    } else if (node.nodeType === 1 && !['SCRIPT','STYLE','INPUT'].includes(node.tagName)) {
+      Array.from(node.childNodes).forEach(child => highlight(child, query));
+    }
+  }
+
+  function clearHighlights() {
+    mainContent.querySelectorAll('mark').forEach(m => {
+      m.parentNode.replaceChild(document.createTextNode(m.textContent), m);
+    });
+    mainContent.normalize();
+  }
+
+  // ─── TOC ACTIVE STATE ───
+  const sections = document.querySelectorAll('.section');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tocLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
