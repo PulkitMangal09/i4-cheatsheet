@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industry 4.0 — Quiz 2 Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f4f3ef;
+    --border: #e5e3dc;
+    --border-strong: #c9c6bc;
+    --text: #1a1916;
+    --text-muted: #6b6860;
+    --text-light: #9b9890;
+    --accent1: #1a3a5c;   /* deep navy */
+    --accent2: #c0430a;   /* terracotta */
+    --accent3: #2d6a4f;   /* forest green */
+    --accent4: #5c3472;   /* plum */
+    --rule: #dedad2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--text);
+    padding: 48px 48px 36px;
+  }
+  .header-inner {
+    max-width: 1380px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .header-left .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--accent1);
+  }
+  .topics-bar {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 20px;
+  }
+  .topic-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+  .header-meta {
+    text-align: right;
+  }
+  .header-meta .big-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--border-strong);
+    font-style: italic;
+  }
+  .header-meta p {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ── LAYOUT ── */
+  main {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 40px 48px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+  }
+
+  @media (max-width: 1100px) { main { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 680px)  { main { grid-template-columns: 1fr; } }
+
+  /* ── SECTION DIVIDER ── */
+  .section-title {
+    grid-column: 1 / -1;
+    background: var(--text);
+    color: var(--bg);
+    padding: 8px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    padding: 24px;
+    position: relative;
+  }
+  .card.span2 { grid-column: span 2; }
+  .card.span3 { grid-column: 1 / -1; }
+
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.3;
+  }
+  .card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 14px 0 6px;
+  }
+
+  /* accent top bars */
+  .card.c1 { border-top: 3px solid var(--accent1); }
+  .card.c2 { border-top: 3px solid var(--accent2); }
+  .card.c3 { border-top: 3px solid var(--accent3); }
+  .card.c4 { border-top: 3px solid var(--accent4); }
+
+  .card.c1 h3 { color: var(--accent1); }
+  .card.c2 h3 { color: var(--accent2); }
+  .card.c3 h3 { color: var(--accent3); }
+  .card.c4 h3 { color: var(--accent4); }
+
+  /* ── FORMULA BLOCKS ── */
+  .formula {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent1);
+    border-radius: 2px;
+    padding: 9px 13px;
+    margin: 6px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--accent1);
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .formula.orange { border-left-color: var(--accent2); color: var(--accent2); }
+  .formula.green  { border-left-color: var(--accent3); color: var(--accent3); }
+  .formula.purple { border-left-color: var(--accent4); color: var(--accent4); }
+  .formula sub, .formula sup { font-size: 9px; }
+
+  /* ── DEF LIST ── */
+  dl.defs { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; }
+  dl.defs dt {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent1);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  dl.defs dd { color: var(--text-muted); font-size: 12.5px; }
+  .card.c2 dl.defs dt { color: var(--accent2); }
+  .card.c3 dl.defs dt { color: var(--accent3); }
+  .card.c4 dl.defs dt { color: var(--accent4); }
+
+  /* ── BULLET LIST ── */
+  ul.pts { list-style: none; padding: 0; }
+  ul.pts li {
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 3px 0 3px 16px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  ul.pts li:last-child { border-bottom: none; }
+  ul.pts li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--text-light);
+    font-size: 11px;
+  }
+  .card.c2 ul.pts li::before { color: var(--accent2); }
+  .card.c3 ul.pts li::before { color: var(--accent3); }
+  .card.c4 ul.pts li::before { color: var(--accent4); }
+  ul.pts strong { color: var(--text); font-weight: 500; }
+
+  /* ── INLINE HIGHLIGHT ── */
+  .hl   { color: var(--text); font-weight: 600; }
+  .hl-b { color: var(--accent1); font-weight: 600; }
+  .hl-o { color: var(--accent2); font-weight: 600; }
+  .hl-g { color: var(--accent3); font-weight: 600; }
+  .hl-p { color: var(--accent4); font-weight: 600; }
+
+  /* ── TABLE ── */
+  table.mini {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  table.mini th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 7px 10px;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-weight: 500;
+  }
+  table.mini td {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+  table.mini tr:nth-child(even) td { background: var(--surface2); }
+
+  /* ── STEPS ── */
+  ol.steps { list-style: none; counter-reset: s; padding: 0; }
+  ol.steps li {
+    counter-increment: s;
+    position: relative;
+    padding: 7px 0 7px 30px;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  ol.steps li:last-child { border-bottom: none; }
+  ol.steps li::before {
+    content: counter(s);
+    position: absolute; left: 0; top: 7px;
+    background: var(--text);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    width: 18px; height: 18px;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card.c2 ol.steps li::before { background: var(--accent2); }
+  .card.c3 ol.steps li::before { background: var(--accent3); }
+  .card.c4 ol.steps li::before { background: var(--accent4); }
+
+  /* ── CHIP ── */
+  .chip {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin: 2px 2px 2px 0;
+  }
+  .chip.orange { border-color: #e0a080; color: var(--accent2); }
+  .chip.green  { border-color: #8dc4a8; color: var(--accent3); }
+  .chip.purple { border-color: #b090c0; color: var(--accent4); }
+
+  /* ── INSIGHT BOX ── */
+  .insight {
+    background: #f0f4ec;
+    border: 1px solid #c4d8bc;
+    border-radius: 3px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--accent3);
+    font-style: italic;
+  }
+  .insight::before { content: '→ '; font-style: normal; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 18px; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 5px; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border-strong);
+  }
+  .tl-item {
+    position: relative;
+    padding: 3px 0 7px 14px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: -4px; top: 8px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--accent2);
+  }
+  .tl-item strong { color: var(--text); display: block; font-size: 13px; font-weight: 500; }
+
+  /* ── COMPARE GRID ── */
+  .cmp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .cmp-cell {
+    background: var(--surface2);
+    border-radius: 2px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+  }
+  .cmp-cell .cmp-head {
+    font-size: 9.5px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    color: var(--accent1);
+  }
+  .cmp-cell.right .cmp-head { color: var(--accent2); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    color: var(--bg);
+    text-align: center;
+    padding: 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    opacity: 0.85;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="eyebrow">Industry 4.0 · Inventory Management & Analytics</div>
+      <h1>Quiz 2 <em>Cheat Sheet</em></h1>
+      <div class="topics-bar">
+        <span class="topic-tag">Inventory Optimization</span>
+        <span class="topic-tag">EOQ Model</span>
+        <span class="topic-tag">News Vendor</span>
+        <span class="topic-tag">Dynamic Inventory · DP</span>
+        <span class="topic-tag">Stochastic · MDP</span>
+        <span class="topic-tag">RL · Q-Learning</span>
+        <span class="topic-tag">Time Series Forecasting</span>
+        <span class="topic-tag">IoT / IIoT</span>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="big-num">Q2</div>
+      <p>All models · All formulas · All algorithms</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══════════ SECTION 01 ═══════════ -->
+  <div class="section-title">01 · Inventory Fundamentals</div>
+
+  <div class="card c1">
+    <div class="card-label">Core Concept</div>
+    <h2>Inventory Management 101</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+      Tradeoff between <span class="hl-b">holding cost</span> vs. <span class="hl-o">ordering cost</span> vs. <span class="hl-p">shortage cost</span>.
+    </p>
+    <h3>Key Decisions</h3>
+    <ul class="pts">
+      <li><strong>When to order</strong> — re-order point, review frequency</li>
+      <li><strong>How much to order</strong> — sales forecast, lead time, on-hand + in-transit stock</li>
+      <li><strong>Where to store</strong> — locating SKUs, shelf-space allocation</li>
+    </ul>
+    <h3>4 Cost Components</h3>
+    <dl class="defs">
+      <dt>C</dt><dd>Unit product cost — constant; relevant only with discounts</dd>
+      <dt>C<sub>o</sub></dt><dd>Ordering cost (Rs/order) — transport, inspection, rework</dd>
+      <dt>C<sub>c</sub></dt><dd>Carrying cost (Rs/unit/yr) — capital, space, obsolescence</dd>
+      <dt>C<sub>s</sub></dt><dd>Shortage cost (Rs/unit/yr) — goodwill loss, lost profit</dd>
+    </dl>
+  </div>
+
+  <div class="card c2">
+    <div class="card-label">Supply Chain</div>
+    <h2>Supply Chain Structure</h2>
+    <h3>Import Flow (First–Middle–Last Mile)</h3>
+    <div class="timeline">
+      <div class="tl-item"><strong>Vendor</strong> cargo loading</div>
+      <div class="tl-item"><strong>Overseas Port</strong> first mile</div>
+      <div class="tl-item"><strong>Inbound Port</strong> govt. clearance, unloading</div>
+      <div class="tl-item"><strong>Distribution Centres</strong> space forecast, splitting shipments</div>
+      <div class="tl-item"><strong>Local Warehouses</strong> searching, handling, fulfilment</div>
+      <div class="tl-item"><strong>Stores → Customers</strong> shelf display, impulse buying</div>
+    </div>
+    <h3>Multi vs. Omni-Channel</h3>
+    <ul class="pts">
+      <li><strong>Multi-channel:</strong> separate inventory pools per channel</li>
+      <li><strong>Omni-channel:</strong> unified inventory, seamless experience across website, stores, marketplaces</li>
+      <li>Key challenge: returns management + allocation across channels</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════ SECTION 02 ═══════════ -->
+  <div class="section-title">02 · Deterministic Inventory Models</div>
+
+  <div class="card c1 span2">
+    <div class="card-label">Classic Model</div>
+    <h2>Economic Order Quantity (EOQ)</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:12px;">
+      Assumes <span class="hl-b">deterministic, constant annual demand D</span>. Instantaneous delivery. No shortage. Continuous review.
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <h3>Key Relationships</h3>
+        <div class="formula">Orders/year       = D / Q</div>
+        <div class="formula">Annual Order Cost  = D·C<sub>o</sub> / Q</div>
+        <div class="formula">Avg Inventory      = Q / 2</div>
+        <div class="formula">Annual Carry Cost  = Q·C<sub>c</sub> / 2</div>
+        <div class="formula">TC(Q) = D·C<sub>o</sub>/Q  +  Q·C<sub>c</sub>/2</div>
+      </div>
+      <div>
+        <h3>Optimal Solution (dTC/dQ = 0)</h3>
+        <div class="formula" style="white-space:normal;padding:14px;font-size:13px;">
+          <strong>Q* = √(2·D·C<sub>o</sub> / C<sub>c</sub>)</strong><br><br>
+          <strong>TC* = √(2·D·C<sub>o</sub>·C<sub>c</sub>)</strong>
+        </div>
+        <div class="insight">TC curve is flat near optimum — 15% deviation in Q causes only ~2% cost increase.</div>
+        <h3>Numerical Example</h3>
+        <dl class="defs" style="font-size:12px;">
+          <dt>D=10,000, C<sub>o</sub>=₹300</dt><dd>C<sub>c</sub>=₹4/unit/yr</dd>
+          <dt>Q*</dt><dd>= √(2×10000×300/4) = <span class="hl-b">1224.75 units</span></dd>
+          <dt>TC*</dt><dd>= √(2×10000×300×4) = <span class="hl-b">₹4898.98/yr</span></dd>
+          <dt>Orders/yr</dt><dd>= <span class="hl-b">8.17</span></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 03 ═══════════ -->
+  <div class="section-title">03 · Probabilistic Single-Period — News Vendor Problem</div>
+
+  <div class="card c4">
+    <div class="card-label">Stochastic · Single Period</div>
+    <h2>News Vendor Model</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+      One-shot ordering decision <em>before</em> demand is revealed. Leftover items salvaged; shortages result in lost sales. E.g. Diwali lights, newspapers.
+    </p>
+    <h3>Notation</h3>
+    <dl class="defs">
+      <dt>X</dt><dd>Random demand (rv)</dd>
+      <dt>G(x)</dt><dd>CDF of demand: Pr(X ≤ x)</dd>
+      <dt>g(x)</dt><dd>PDF of demand</dd>
+      <dt>c<sub>0</sub></dt><dd>Per-unit overage cost (leftover → salvage loss)</dd>
+      <dt>c<sub>s</sub></dt><dd>Per-unit underage/shortage cost (lost profit)</dd>
+      <dt>Q</dt><dd>Order quantity (decision variable)</dd>
+    </dl>
+    <h3>Assumptions</h3>
+    <ul class="pts">
+      <li>Products separable; single planning period</li>
+      <li>Demand is random; deliveries arrive before demand</li>
+      <li>Overage and shortage costs are linear</li>
+    </ul>
+  </div>
+
+  <div class="card c4">
+    <div class="card-label">Optimisation</div>
+    <h2>News Vendor — Solution</h2>
+    <h3>Total Cost Function</h3>
+    <div class="formula purple" style="white-space:normal;line-height:2.1;">
+      Y(Q) = c<sub>0</sub>·∫<sub>0</sub><sup>Q</sup>(Q−x)g(x)dx  +  c<sub>s</sub>·∫<sub>Q</sub><sup>∞</sup>(x−Q)g(x)dx
+    </div>
+    <h3>Optimal Q — Critical Ratio</h3>
+    <div class="formula purple" style="white-space:normal;font-size:13px;padding:12px;">
+      <strong>G(Q*) = Pr(X ≤ Q*) = c<sub>s</sub> / (c<sub>s</sub> + c<sub>0</sub>)</strong>
+    </div>
+    <h3>Normal Demand</h3>
+    <div class="formula purple">
+      Q* = μ + z·σ,  where Φ(z) = critical ratio
+    </div>
+    <h3>Worked Example</h3>
+    <ul class="pts">
+      <li>Cost=Re1, sells=₹2, salvage=50p → c<sub>s</sub>=1, c<sub>0</sub>=0.5</li>
+      <li>Ratio = 1/(1+0.5) = <span class="hl-p">0.67</span> → z = 0.44</li>
+      <li>μ=10,000, σ=1,000 → <span class="hl-p">Q* = 10,440 units</span></li>
+    </ul>
+    <div class="insight" style="background:#f4f0f8;border-color:#c4a8d8;color:var(--accent4);">
+      Ratio &gt; 0.5: higher variability increases order. Ratio &lt; 0.5: higher variability decreases order.
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 04 ═══════════ -->
+  <div class="section-title">04 · Dynamic Inventory Management (Deterministic DP)</div>
+
+  <div class="card c2">
+    <div class="card-label">Multi-Period · Deterministic</div>
+    <h2>Dynamic Programming Setup</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+      Extends EOQ to <span class="hl-o">multi-period horizon T</span> with known but time-varying demand D<sub>t</sub>.
+    </p>
+    <h3>Assumptions</h3>
+    <ul class="pts">
+      <li>Demand D<sub>t</sub> is dynamic but <em>known</em> (deterministic)</li>
+      <li>Instantaneous delivery (no lead time)</li>
+      <li>Fixed ordering + variable product + holding cost</li>
+      <li>Limited storage & ordering capacity</li>
+      <li>Demand must be met each period</li>
+    </ul>
+    <h3>DP Formulation</h3>
+    <dl class="defs">
+      <dt>t</dt><dd>Stage (day/week), t = 1…N</dd>
+      <dt>s<sub>t</sub></dt><dd>State = inventory at start of period t</dd>
+      <dt>a<sub>t</sub></dt><dd>Action = order quantity at period t</dd>
+      <dt>f<sub>t</sub>(s<sub>t</sub>)</dt><dd>Total optimal cost from period t onward</dd>
+    </dl>
+    <div class="formula orange">s<sub>t+1</sub> = Max(s<sub>t</sub> + a<sub>t</sub> − D<sub>t</sub>, 0)  [lost sales]</div>
+    <div class="formula orange">s<sub>t+1</sub> = s<sub>t</sub> + a<sub>t</sub> − D<sub>t</sub>           [backorders]</div>
+    <h3>Bellman Equation</h3>
+    <div class="formula orange" style="white-space:normal;font-size:13px;padding:12px;">
+      <strong>f<sub>t</sub>(s<sub>t</sub>) = min<sub>a</sub> [ C(s<sub>t</sub>,a<sub>t</sub>) + f<sub>t+1</sub>(s<sub>t+1</sub>) ]</strong>
+    </div>
+  </div>
+
+  <div class="card c2">
+    <div class="card-label">Worked Example</div>
+    <h2>Backward Induction (T=4 weeks)</h2>
+    <h3>Parameters</h3>
+    <dl class="defs">
+      <dt>D</dt><dd>3, 4, 2, 4 units (weeks 1–4)</dd>
+      <dt>C<sub>o</sub></dt><dd>$4 fixed ordering cost</dd>
+      <dt>C</dt><dd>$2/unit product cost</dd>
+      <dt>C<sub>c</sub></dt><dd>$0.5/unit/period holding</dd>
+      <dt>Max order</dt><dd>5 units; Warehouse cap: 4 units</dd>
+    </dl>
+    <h3>Solve Backward: t = 4 (D<sub>4</sub>=4)</h3>
+    <table class="mini">
+      <thead><tr><th>s<sub>4</sub></th><th>a<sub>4</sub></th><th>f<sub>4</sub>(s<sub>4</sub>)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>4</td><td>4 + 2×4 = $12</td></tr>
+        <tr><td>1</td><td>3</td><td>4 + 2×3 = $10</td></tr>
+        <tr><td>2</td><td>2</td><td>4 + 2×2 = $8</td></tr>
+        <tr><td>3</td><td>1</td><td>4 + 2×1 = $6</td></tr>
+        <tr><td>4</td><td>0</td><td>0 + 2×0 = $0</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--text-muted);font-size:12px;margin-top:10px;">Then compute f<sub>3</sub>(s<sub>3</sub>) using Bellman, propagate backward for t=2 and t=1.</p>
+    <h3>Holding Cost at end of period t</h3>
+    <div class="formula orange">C<sub>c</sub> × Max(s<sub>t</sub> + a<sub>t</sub> − D<sub>t</sub>, 0)</div>
+  </div>
+
+  <!-- ═══════════ SECTION 05 ═══════════ -->
+  <div class="section-title">05 · Stochastic Inventory — MDP & Reinforcement Learning</div>
+
+  <div class="card c1">
+    <div class="card-label">Stochastic · MDP</div>
+    <h2>Stochastic Inventory as MDP</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+      Demand unknown — only a <span class="hl-b">probability distribution</span> is known. Framework: <span class="hl-b">Markov Decision Process</span>.
+    </p>
+    <h3>MDP Components</h3>
+    <dl class="defs">
+      <dt>Stage</dt><dd>t = 1, 2, …N (days)</dd>
+      <dt>State s<sub>t</sub></dt><dd>Inventory level ∈ {0,1,…,M}</dd>
+      <dt>Action a<sub>t</sub></dt><dd>Order qty ∈ {0,1,…,M−s<sub>t</sub>}</dd>
+      <dt>r<sub>t</sub>(s,a)</dt><dd>Reward = expected revenue − ordering − holding cost</dd>
+    </dl>
+    <h3>Reward Function</h3>
+    <div class="formula" style="white-space:normal;line-height:2;">
+      r<sub>t</sub>(s,a) = E[Min(D<sub>t</sub>, s+a)·price] − C<sub>0</sub>(a) − C<sub>c</sub>(s+a)
+    </div>
+    <div class="formula" style="white-space:normal;">
+      C<sub>0</sub>(a) = K + c(a)  if a&gt;0,  else  0
+    </div>
+    <h3>Transition Probabilities  Pr(s'|s,a)</h3>
+    <table class="mini">
+      <thead><tr><th>Condition</th><th>Probability</th></tr></thead>
+      <tbody>
+        <tr><td>s' ∈ (s+a, M]</td><td>0 (demand can't be negative)</td></tr>
+        <tr><td>s' ∈ (0, s+a]</td><td>p<sub>s+a−s'</sub></td></tr>
+        <tr><td>s' = 0</td><td>∑<sub>k&gt;s+a</sub> p<sub>k</sub></td></tr>
+      </tbody>
+    </table>
+    <h3>Example Parameters</h3>
+    <dl class="defs" style="font-size:12px;">
+      <dt>K=$4, c(u)=$2u</dt><dd>h(u)=$u, f(u)=$8u</dd>
+      <dt>M=4, N=3, λ=0.95</dt><dd>p(1)=¼, p(2)=½, p(3)=¼</dd>
+    </dl>
+  </div>
+
+  <div class="card c3">
+    <div class="card-label">Policy</div>
+    <h2>Policies & (s, S) Policy</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+      A <strong>Markov decision rule</strong> maps each inventory level s<sub>t</sub> → order quantity a<sub>t</sub>.
+    </p>
+    <h3>Famous (s, S) Policy</h3>
+    <div style="background:var(--surface2);border:1px solid #8dc4a8;border-radius:3px;padding:14px;margin:8px 0;">
+      <p style="color:var(--accent3);font-size:13px;">
+        If inventory &lt; <span class="hl-g">s</span> → order up to <span class="hl-g">S</span><br>
+        If inventory ≥ <span class="hl-g">s</span> → place <em>no</em> order
+      </p>
+    </div>
+    <p style="color:var(--text-muted);font-size:12.5px;margin-bottom:10px;">Optimal for stochastic problems under fixed ordering cost K.</p>
+    <h3>Stochastic Bellman Equation</h3>
+    <div class="formula green" style="white-space:normal;line-height:2.2;padding:12px;">
+      u*<sub>t</sub>(s,a) = r(s,a) + Σ<sub>j∈S</sub> λ·p(j|s,a)·u*<sub>t+1</sub>(j)
+    </div>
+    <h3>Value Iteration</h3>
+    <div class="formula green" style="white-space:normal;line-height:2;padding:12px;">
+      v<sub>n</sub>(s) = max<sub>a</sub> { r(s,a) + Σ<sub>j</sub> λ·p(j|s,a)·v<sub>n+1</sub>(j) }
+    </div>
+    <ol class="steps">
+      <li>Pick initial v⁰, threshold ε', set n=0</li>
+      <li>∀s: compute v<sup>n+1</sup>(s) = max<sub>a</sub>{r(s,a) + Σ λ·p·v<sup>n</sup>(j)}</li>
+      <li>If ‖v<sup>n+1</sup>−v<sup>n</sup>‖ ≤ ε' → output policy. Else repeat.</li>
+    </ol>
+    <div class="insight">Convergence guaranteed when λ &lt; 1.</div>
+  </div>
+
+  <div class="card c1">
+    <div class="card-label">Algorithm</div>
+    <h2>Policy Iteration</h2>
+    <ol class="steps">
+      <li><strong>Init:</strong> pick arbitrary decision rule d<sub>0</sub></li>
+      <li><strong>Policy Evaluation:</strong> solve v<sup>n</sup>(s) = r(s,d<sub>n</sub>) + Σλ·p·v<sup>n</sup>(j) for all s</li>
+      <li><strong>Policy Improvement:</strong> d<sub>n+1</sub> = argmax<sub>a</sub>{r(s,a) + Σλ·p·v<sup>n</sup>(j)}</li>
+      <li>If d<sub>n+1</sub> = d<sub>n</sub>: <strong>STOP</strong> (optimal). Else repeat.</li>
+    </ol>
+    <div class="cmp-grid" style="margin-top:14px;">
+      <div class="cmp-cell left">
+        <div class="cmp-head">Value Iteration</div>
+        <ul class="pts" style="font-size:11.5px;">
+          <li>Updates value function</li>
+          <li>Simple per-iteration</li>
+          <li>Many iterations needed</li>
+        </ul>
+      </div>
+      <div class="cmp-cell right">
+        <div class="cmp-head">Policy Iteration</div>
+        <ul class="pts" style="font-size:11.5px;">
+          <li>Updates policy directly</li>
+          <li>Solves linear system</li>
+          <li>Fewer iterations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card c4">
+    <div class="card-label">Reinforcement Learning</div>
+    <h2>Q-Learning (Model-Free RL)</h2>
+    <div class="cmp-grid">
+      <div class="cmp-cell left">
+        <div class="cmp-head">Model-Based MDP</div>
+        <p style="color:var(--text-muted);font-size:12px;">Pr(s'|s,a) is <em>known</em>. Use Value/Policy Iteration.</p>
+      </div>
+      <div class="cmp-cell right">
+        <div class="cmp-head">Model-Free</div>
+        <p style="color:var(--text-muted);font-size:12px;">Transition probabilities <em>unknown</em>. Learn from experience.</p>
+      </div>
+    </div>
+    <h3>Q-Function Update Rule</h3>
+    <div class="formula purple" style="white-space:normal;line-height:2.2;padding:14px;font-size:11.5px;">
+      Q<sub>t+1</sub>(s,a) = Q<sub>t</sub>(s,a) +<br>
+      <span style="padding-left:14px;">α<sub>t</sub> · [ r(s,a) + λ·max<sub>a'</sub>Q<sub>t</sub>(s',a') − Q<sub>t</sub>(s,a) ]</span>
+    </div>
+    <dl class="defs" style="margin-top:10px;">
+      <dt>α<sub>t</sub></dt><dd>Learning rate (decreasing over time)</dd>
+      <dt>λ</dt><dd>Discount factor</dd>
+      <dt>Q(s,a)</dt><dd>Quality of action a in state s</dd>
+    </dl>
+    <div class="insight" style="background:#f4f0f8;border-color:#c4a8d8;color:var(--accent4);">
+      Converges to Q* under appropriate conditions. Optimal policy: π*(s) = argmax<sub>a</sub> Q*(s,a)
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 06 ═══════════ -->
+  <div class="section-title">06 · Time Series Forecasting</div>
+
+  <div class="card c2">
+    <div class="card-label">Demand Forecasting</div>
+    <h2>Forecasting Overview</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+      Two tasks: (1) identify <span class="hl-o">patterns</span> in historical data; (2) discover <span class="hl-o">relationships</span> among variables.
+    </p>
+    <h3>Data Decomposition Components</h3>
+    <ul class="pts">
+      <li><strong>Trend</strong> — long-term direction (up/down)</li>
+      <li><strong>Seasonal</strong> — regular periodic fluctuations</li>
+      <li><strong>Cyclic</strong> — irregular multi-year waves</li>
+      <li><strong>Random</strong> — noise / unexplained variation</li>
+    </ul>
+    <h3>Methods</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+      <span class="chip">Moving Avg</span>
+      <span class="chip">Exp. Smoothing</span>
+      <span class="chip orange">Double ES</span>
+      <span class="chip orange">Holt's</span>
+      <span class="chip green">Winter's</span>
+      <span class="chip green">AR(p)</span>
+      <span class="chip purple">ARMA</span>
+      <span class="chip purple">ARIMA</span>
+    </div>
+  </div>
+
+  <div class="card c2">
+    <div class="card-label">Method</div>
+    <h2>Exponential Smoothing (ES)</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:8px;">
+      Weighted average of current observation & previous forecast. Parameter α ∈ (0,1).
+    </p>
+    <div class="formula orange" style="white-space:normal;font-size:13px;padding:12px;">
+      <strong>F<sub>t+1</sub> = α·D<sub>t</sub> + (1−α)·F<sub>t</sub></strong>
+    </div>
+    <ul class="pts">
+      <li>Smaller α → smoother, slower response</li>
+      <li>Larger α → more weight on recent data</li>
+      <li>Initial F<sub>1</sub>: use first value, last, or simple average</li>
+    </ul>
+    <h3>ES lag when trend exists</h3>
+    <div class="formula orange">Lag = D<sub>t</sub> − F<sub>t</sub> = ((1−α)/α) · b</div>
+    <p style="color:var(--text-muted);font-size:12px;margin-top:6px;">
+      Solution: <span class="hl-o">Double Exponential Smoothing</span> (apply ES twice)
+    </p>
+  </div>
+
+  <div class="card c3">
+    <div class="card-label">Method</div>
+    <h2>Double ES & Holt's Method</h2>
+    <h3>Double ES</h3>
+    <div class="formula green">b = (S − S') · α/(1−α),  a = 2S − S'</div>
+    <div class="formula green">F<sub>t+m</sub> = a + b·m  (m steps ahead)</div>
+    <h3>Holt's Method (level + slope)</h3>
+    <div class="formula green" style="white-space:normal;line-height:2.2;padding:12px;">
+      F<sub>t+1</sub> = a<sub>t</sub> + b<sub>t</sub><br>
+      a<sub>t</sub> = α·D<sub>t</sub> + (1−α)·(a<sub>t-1</sub>+b<sub>t-1</sub>)<br>
+      b<sub>t</sub> = β·(a<sub>t</sub>−a<sub>t-1</sub>) + (1−β)·b<sub>t-1</sub>
+    </div>
+    <dl class="defs">
+      <dt>a<sub>t</sub></dt><dd>Level estimate (smoothed)</dd>
+      <dt>b<sub>t</sub></dt><dd>Slope/trend estimate</dd>
+      <dt>α, β</dt><dd>Smoothing parameters</dd>
+    </dl>
+    <h3>Worked Example</h3>
+    <dl class="defs" style="font-size:12px;">
+      <dt>α=0.2, t=8</dt><dd>S=105.4, S'=104.8</dd>
+      <dt>b</dt><dd>= (105.4−104.8)×0.2/0.8 = 0.15</dd>
+      <dt>a</dt><dd>= 2×105.4−104.8 = 106.0</dd>
+      <dt>F<sub>9</sub></dt><dd>= 106.0 + 0.15 = <span class="hl-g">106.15</span></dd>
+    </dl>
+  </div>
+
+  <div class="card c3">
+    <div class="card-label">Method</div>
+    <h2>Winter's Model & AR Models</h2>
+    <h3>Winter's Model (trend + seasonality)</h3>
+    <div class="formula green" style="white-space:normal;line-height:2.2;padding:12px;font-size:11.5px;">
+      F<sub>t+1</sub> = (a<sub>t</sub>+b<sub>t</sub>) · C<sub>t+1</sub><br>
+      a<sub>t+1</sub> = α·D<sub>t+1</sub>/C<sub>t+1</sub> + (1−α)·(a<sub>t</sub>+b<sub>t</sub>)<br>
+      b<sub>t+1</sub> = β·(a<sub>t+1</sub>−a<sub>t</sub>) + (1−β)·b<sub>t</sub><br>
+      C<sub>t+p+1</sub> = γ·D<sub>t+1</sub>/a<sub>t+1</sub> + (1−γ)·C<sub>t+1</sub>
+    </div>
+    <dl class="defs" style="font-size:12px;">
+      <dt>a<sub>t</sub>, b<sub>t</sub>, C<sub>t</sub></dt><dd>Level, trend, seasonality index</dd>
+      <dt>p</dt><dd>Length of seasonal cycle</dd>
+      <dt>α, β, γ</dt><dd>Smoothing params</dd>
+    </dl>
+    <h3>AR(p) / ARMA</h3>
+    <div class="formula green" style="white-space:normal;line-height:2;">
+      AR(1): D̂<sub>t</sub> = φ<sub>1</sub>·D̂<sub>t-1</sub> + ε<sub>t</sub><br>
+      MA(1): F<sub>t</sub> = μ − θ·ε<sub>t-1</sub><br>
+      ARMA: D̂<sub>t</sub> = φ<sub>1</sub>·D̂<sub>t-1</sub> − θ·ε<sub>t-1</sub> + ε<sub>t</sub>
+    </div>
+    <p style="color:var(--text-muted);font-size:12px;margin-top:6px;">Box-Jenkins (1976) — best for short-term forecasting. Estimate φ, θ via OLS/MLE.</p>
+  </div>
+
+  <!-- ═══════════ SECTION 07 ═══════════ -->
+  <div class="section-title">07 · IoT / IIoT — Sensorization</div>
+
+  <div class="card c4">
+    <div class="card-label">Technology</div>
+    <h2>IoT Fundamentals</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+      <span class="hl-p">Internet of Things</span>: network of interconnected devices exchanging data with minimal human intervention.
+    </p>
+    <h3>3 Forms of IoT</h3>
+    <dl class="defs">
+      <dt>Consumer</dt><dd>Smart homes, personal connectivity, entertainment</dd>
+      <dt>Commercial</dt><dd>Banking, insurance, financial services, e-commerce</dd>
+      <dt>Industrial</dt><dd>Manufacturing, utilities — focus of this course</dd>
+    </dl>
+    <h3>How IoT Works</h3>
+    <ol class="steps">
+      <li>Device collects <strong>analog data</strong> (light, sound, temp, motion…)</li>
+      <li>Analog → digital conversion by sensors</li>
+      <li>Data sent to <strong>cloud</strong> wirelessly</li>
+      <li>Software processes & decides: alert or auto-adjust</li>
+    </ol>
+    <h3>7 Principles of IoT</h3>
+    <ol class="steps">
+      <li><span class="hl-p">Big Analog Data</span> — convert analog to digital everywhere</li>
+      <li><span class="hl-p">Constant Connection</span> — 24×7 monitoring, maintenance, motivation</li>
+      <li><span class="hl-p">Real Time</span> — truly real-time data</li>
+      <li><span class="hl-p">Spectrum of Insights</span> — real-time + archival</li>
+      <li><span class="hl-p">Immediacy vs. Depth</span> — tradeoff bridged by compute</li>
+      <li><span class="hl-p">Shift Left</span> — edge computing near IoT devices</li>
+      <li><span class="hl-p">Next "V"</span> — adds Visibility to Volume/Velocity/Variety/Veracity/Value</li>
+    </ol>
+  </div>
+
+  <div class="card c4 span2">
+    <div class="card-label">Applications</div>
+    <h2>IIoT in Manufacturing — Key Application Areas</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px;">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:14px;">
+        <div style="color:var(--accent4);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:500;">Inventory</div>
+        <ul class="pts" style="font-size:12px;">
+          <li>RFID tags give every item a UID</li>
+          <li>Readers scan & transmit to cloud</li>
+          <li>Real-time location + supply chain tracking</li>
+          <li>Tracks material movement speed</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:14px;">
+        <div style="color:var(--accent4);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:500;">Predictive Maintenance</div>
+        <ul class="pts" style="font-size:12px;">
+          <li>Traditional: time-based (inefficient)</li>
+          <li>Only 18% of failures are age-related; 82% random</li>
+          <li>Sensors monitor operating environment</li>
+          <li>Cloud analytics evaluate actual wear</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:14px;">
+        <div style="color:var(--accent4);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:500;">Quality Control</div>
+        <ul class="pts" style="font-size:12px;">
+          <li>Traditional: sequential (produce → test)</li>
+          <li>IIoT: parallel thermal & video monitoring</li>
+          <li>Test at every manufacturing step</li>
+          <li>Catch defects early → reduce rework</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:14px;">
+        <div style="color:var(--accent4);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:500;">Smart Metering</div>
+        <ul class="pts" style="font-size:12px;">
+          <li>Monitors water, electricity, fuel</li>
+          <li>Granular usage → effective deployment</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:14px;">
+        <div style="color:var(--accent4);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:500;">Industrial Safety</div>
+        <ul class="pts" style="font-size:12px;">
+          <li>Track absences, mishaps, machinery damage</li>
+          <li>Wearables monitor health metrics</li>
+          <li>Real-time safety alerts</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:14px;">
+        <div style="color:var(--accent4);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:500;">Data Flow</div>
+        <ul class="pts" style="font-size:12px;">
+          <li>Collect data from assets & processes</li>
+          <li>Send to cloud for processing</li>
+          <li>Automated decision-making & response</li>
+          <li>Edge computing for real-time critical actions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 08 ═══════════ -->
+  <div class="section-title">08 · Quick Reference — All Key Formulas</div>
+
+  <div class="card c1 span3">
+    <div class="card-label">Master Formula Sheet</div>
+    <h2>All Key Formulas at a Glance</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div>
+        <h3>EOQ</h3>
+        <div class="formula" style="font-size:11.5px;white-space:normal;">TC = DC<sub>o</sub>/Q + QC<sub>c</sub>/2</div>
+        <div class="formula" style="font-size:11.5px;">Q* = √(2DC<sub>o</sub>/C<sub>c</sub>)</div>
+        <div class="formula" style="font-size:11.5px;">TC* = √(2DC<sub>o</sub>C<sub>c</sub>)</div>
+      </div>
+      <div>
+        <h3>News Vendor</h3>
+        <div class="formula purple" style="font-size:11.5px;white-space:normal;">G(Q*) = c<sub>s</sub>/(c<sub>s</sub>+c<sub>0</sub>)</div>
+        <div class="formula purple" style="font-size:11.5px;">Q* = μ + zσ  (normal)</div>
+        <div class="formula purple" style="font-size:11.5px;">Φ(z) = critical ratio</div>
+      </div>
+      <div>
+        <h3>Dynamic DP</h3>
+        <div class="formula orange" style="font-size:11.5px;white-space:normal;">s<sub>t+1</sub>=Max(s<sub>t</sub>+a<sub>t</sub>−D<sub>t</sub>,0)</div>
+        <div class="formula orange" style="font-size:11.5px;white-space:normal;">f<sub>t</sub>=min[C(s,a)+f<sub>t+1</sub>(s')]</div>
+      </div>
+      <div>
+        <h3>Stochastic MDP</h3>
+        <div class="formula" style="font-size:11px;white-space:normal;">r(s,a)=E[min(D,s+a)·p]−C<sub>0</sub>−C<sub>c</sub></div>
+        <div class="formula" style="font-size:11px;white-space:normal;">v(s)=max{r+λΣp(j|s,a)v(j)}</div>
+      </div>
+      <div>
+        <h3>Q-Learning</h3>
+        <div class="formula purple" style="font-size:11px;white-space:normal;">Q<sub>t+1</sub>=Q<sub>t</sub>+α[r+λ·maxQ<sub>t</sub>−Q<sub>t</sub>]</div>
+      </div>
+      <div>
+        <h3>Exp. Smoothing</h3>
+        <div class="formula orange" style="font-size:11.5px;white-space:normal;">F<sub>t+1</sub>=αD<sub>t</sub>+(1−α)F<sub>t</sub></div>
+      </div>
+      <div>
+        <h3>Holt's Method</h3>
+        <div class="formula green" style="font-size:11px;white-space:normal;line-height:1.8;">
+          F<sub>t+1</sub>=a<sub>t</sub>+b<sub>t</sub><br>
+          a<sub>t</sub>=αD<sub>t</sub>+(1−α)(a<sub>t-1</sub>+b<sub>t-1</sub>)<br>
+          b<sub>t</sub>=β(a<sub>t</sub>−a<sub>t-1</sub>)+(1−β)b<sub>t-1</sub>
+        </div>
+      </div>
+      <div>
+        <h3>AR(1) / ARMA</h3>
+        <div class="formula green" style="font-size:11.5px;white-space:normal;">D̂<sub>t</sub>=φ<sub>1</sub>D̂<sub>t-1</sub>+ε<sub>t</sub></div>
+        <div class="formula green" style="font-size:11.5px;white-space:normal;">D̂<sub>t</sub>=φ<sub>1</sub>D̂<sub>t-1</sub>−θε<sub>t-1</sub>+ε<sub>t</sub></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card c2 span3">
+    <div class="card-label">Comparison</div>
+    <h2>Model Comparison — When to Use What</h2>
+    <table class="mini">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Demand Type</th>
+          <th>Time Horizon</th>
+          <th>Decision</th>
+          <th>Solution Method</th>
+          <th>Key Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--accent1);font-weight:500;">EOQ</td>
+          <td>Deterministic, constant</td>
+          <td>Infinite / repeating</td>
+          <td>Order quantity</td>
+          <td>Calculus (FOC)</td>
+          <td>Q* = √(2DC<sub>o</sub>/C<sub>c</sub>)</td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent4);font-weight:500;">News Vendor</td>
+          <td>Stochastic, known dist.</td>
+          <td>Single period</td>
+          <td>Order quantity</td>
+          <td>Critical ratio</td>
+          <td>Q* = μ + zσ</td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent2);font-weight:500;">Dynamic DP</td>
+          <td>Deterministic, time-varying</td>
+          <td>Finite, multi-period</td>
+          <td>Order qty each period</td>
+          <td>Backward induction</td>
+          <td>Policy {a<sub>1</sub>*,…,a<sub>T</sub>*}</td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent1);font-weight:500;">Stochastic MDP</td>
+          <td>Stochastic, known PMF</td>
+          <td>Finite or infinite</td>
+          <td>Order qty each period</td>
+          <td>Value/Policy iteration</td>
+          <td>(s,S) policy or general π*</td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent4);font-weight:500;">Q-Learning</td>
+          <td>Stochastic, unknown dist.</td>
+          <td>Infinite</td>
+          <td>Order qty each period</td>
+          <td>Model-free RL</td>
+          <td>Q*(s,a) table → π*</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  INDUSTRY 4.0 · QUIZ 2 CHEAT SHEET · ALL MODELS, ALGORITHMS & FORMULAS FROM COURSE SLIDES
+</footer>
+
+</body>
+</html>

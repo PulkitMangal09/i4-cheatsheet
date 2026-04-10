@@ -4,118 +4,111 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Industry 4.0 — Cheatsheet Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0f;
-      --surface: #13131a;
-      --border: #1e1e2e;
-      --accent1: #00e5ff;
-      --accent2: #ff6b35;
-      --text: #e8e8f0;
-      --muted: #6b6b8a;
+      --bg: #fafaf8;
+      --surface: #ffffff;
+      --surface2: #f4f3ef;
+      --border: #e5e3dc;
+      --border-strong: #c9c6bc;
+      --text: #1a1916;
+      --text-muted: #6b6860;
+      --text-light: #9b9890;
+      --accent1: #1a3a5c;
+      --accent2: #c0430a;
+      --accent3: #2d6a4f;
+      --accent4: #5c3472;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Mono', monospace;
+      font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 2rem;
-      overflow: hidden;
     }
 
-    /* animated grid background */
+    /* subtle dot grid background */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.4;
+      background-image: radial-gradient(circle, #ccc9be 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.5;
       z-index: 0;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      top: -40%;
-      left: -20%;
-      width: 60vw;
-      height: 60vw;
-      background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%);
-      z-index: 0;
-      animation: drift 12s ease-in-out infinite alternate;
-    }
-
-    @keyframes drift {
-      from { transform: translate(0, 0); }
-      to   { transform: translate(10vw, 8vh); }
     }
 
     .container {
       position: relative;
       z-index: 1;
-      max-width: 700px;
+      max-width: 680px;
       width: 100%;
       text-align: center;
     }
 
     .badge {
       display: inline-block;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--accent1);
-      border: 1px solid var(--accent1);
-      padding: 0.25rem 0.8rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border-strong);
+      padding: 0.25rem 0.9rem;
       border-radius: 2px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.6rem;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.1s forwards;
     }
 
     h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 6vw, 3.8rem);
-      font-weight: 800;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.6rem, 7vw, 4.2rem);
+      font-weight: 400;
       line-height: 1.05;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       margin-bottom: 0.6rem;
+      color: var(--text);
       opacity: 0;
       animation: fadeUp 0.5s ease 0.2s forwards;
     }
 
-    h1 span {
+    h1 em {
+      font-style: italic;
       color: var(--accent1);
     }
 
     .subtitle {
-      font-size: 0.85rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      margin-bottom: 3rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      letter-spacing: 0.08em;
+      margin-bottom: 2.8rem;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.3s forwards;
     }
 
     .cards {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.45s forwards;
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 580px) {
       .cards { grid-template-columns: 1fr; }
     }
 
@@ -123,80 +116,84 @@
       display: block;
       text-decoration: none;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.8rem 1.5rem;
+      padding: 2rem 1.6rem 3rem;
       text-align: left;
       position: relative;
       overflow: hidden;
-      transition: border-color 0.2s, transform 0.2s;
+      transition: background 0.18s;
     }
 
+    .card:hover { background: var(--surface2); }
+
+    /* colored top accent bar */
     .card::before {
       content: '';
       position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.25s;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      transition: height 0.18s;
     }
-
-    .card-q1::before { background: linear-gradient(135deg, rgba(0,229,255,0.07) 0%, transparent 60%); }
-    .card-q2::before { background: linear-gradient(135deg, rgba(255,107,53,0.07) 0%, transparent 60%); }
-
-    .card:hover { transform: translateY(-3px); }
-    .card-q1:hover { border-color: var(--accent1); }
-    .card-q2:hover { border-color: var(--accent2); }
-    .card:hover::before { opacity: 1; }
+    .card:hover::before { height: 4px; }
+    .card-q1::before { background: var(--accent1); }
+    .card-q2::before { background: var(--accent2); }
+    .card-q3::before { background: var(--accent3); }
 
     .card-tag {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       font-weight: 500;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.9rem;
     }
-
     .card-q1 .card-tag { color: var(--accent1); }
     .card-q2 .card-tag { color: var(--accent2); }
+    .card-q3 .card-tag { color: var(--accent3); }
 
     .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
       color: var(--text);
-      margin-bottom: 0.6rem;
-      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
     }
 
     .card-desc {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.6;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      font-family: 'DM Sans', sans-serif;
     }
 
     .card-arrow {
       position: absolute;
       bottom: 1.2rem;
       right: 1.4rem;
-      font-size: 1.2rem;
-      opacity: 0.3;
-      transition: opacity 0.2s, transform 0.2s;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      opacity: 0.25;
+      transition: opacity 0.18s, transform 0.18s;
+      color: var(--text);
     }
     .card:hover .card-arrow { opacity: 1; transform: translate(3px, -3px); }
     .card-q1:hover .card-arrow { color: var(--accent1); }
     .card-q2:hover .card-arrow { color: var(--accent2); }
+    .card-q3:hover .card-arrow { color: var(--accent3); }
 
     .footer {
-      margin-top: 2.5rem;
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
+      margin-top: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.6s forwards;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
   </style>
@@ -204,8 +201,8 @@
 <body>
   <div class="container">
     <div class="badge">Industry 4.0 · NPTEL</div>
-    <h1>Cheatsheet <span>Hub</span></h1>
-    <p class="subtitle">Select the exam you're preparing for</p>
+    <h1>Cheatsheet <em>Hub</em></h1>
+    <p class="subtitle">// select the exam you're preparing for</p>
 
     <div class="cards">
       <a href="./quiz1/index.html" class="card card-q1">
@@ -221,9 +218,16 @@
         <p class="card-desc">EOQ, Newsvendor, Revenue Mgmt, K-Means, Dynamic Programming</p>
         <span class="card-arrow">↗</span>
       </a>
+
+      <a href="./cheatsheet/index.html" class="card card-q3">
+        <div class="card-tag">Cheat Sheet</div>
+        <div class="card-title">Inventory Management &amp; Analytics</div>
+        <p class="card-desc">EOQ, News Vendor, MDP, Q-Learning, Time Series, IIoT</p>
+        <span class="card-arrow">↗</span>
+      </a>
     </div>
 
-    <p class="footer">📖 Study hard · Good luck on your exam</p>
+    <p class="footer">Study hard · Good luck on your exam</p>
   </div>
 </body>
 </html>
