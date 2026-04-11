@@ -21,6 +21,7 @@
       --accent2: #c0430a;
       --accent3: #2d6a4f;
       --accent4: #5c3472;
+      --accent5: #7a4f1a;
     }
 
     body {
@@ -35,7 +36,6 @@
       padding: 2rem;
     }
 
-    /* subtle dot grid background */
     body::before {
       content: '';
       position: fixed;
@@ -49,7 +49,7 @@
     .container {
       position: relative;
       z-index: 1;
-      max-width: 680px;
+      max-width: 780px;
       width: 100%;
       text-align: center;
     }
@@ -96,6 +96,19 @@
       animation: fadeUp 0.5s ease 0.3s forwards;
     }
 
+    /* section label */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-align: left;
+      margin-bottom: 0.6rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.4s forwards;
+    }
+
     .cards {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -106,10 +119,27 @@
       overflow: hidden;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.45s forwards;
+      margin-bottom: 1px;
     }
 
     @media (max-width: 580px) {
       .cards { grid-template-columns: 1fr; }
+      .cards-bottom { grid-template-columns: 1fr !important; }
+    }
+
+    /* bottom row — single wide card */
+    .cards-bottom {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.52s forwards;
+      margin-bottom: 2rem;
     }
 
     .card {
@@ -125,7 +155,6 @@
 
     .card:hover { background: var(--surface2); }
 
-    /* colored top accent bar */
     .card::before {
       content: '';
       position: absolute;
@@ -137,6 +166,7 @@
     .card-q1::before { background: var(--accent1); }
     .card-q2::before { background: var(--accent2); }
     .card-q3::before { background: var(--accent3); }
+    .card-dp::before { background: var(--accent5); }
 
     .card-tag {
       font-family: 'DM Mono', monospace;
@@ -149,6 +179,7 @@
     .card-q1 .card-tag { color: var(--accent1); }
     .card-q2 .card-tag { color: var(--accent2); }
     .card-q3 .card-tag { color: var(--accent3); }
+    .card-dp .card-tag { color: var(--accent5); }
 
     .card-title {
       font-family: 'DM Serif Display', serif;
@@ -166,6 +197,43 @@
       font-family: 'DM Sans', sans-serif;
     }
 
+    /* wide card layout */
+    .card-wide {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      padding: 1.6rem 2rem 2rem;
+    }
+
+    .card-wide .card-body { flex: 1; }
+
+    .card-wide .card-meta {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-end;
+      padding-top: 0.2rem;
+    }
+
+    .meta-pill {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.7rem;
+      border-radius: 2px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .pill-teal { color: #085041; border-color: #1D9E75; background: #E1F5EE; }
+    .pill-amber { color: #633806; border-color: #BA7517; background: #FAEEDA; }
+
+    @media(max-width:580px) {
+      .card-wide { flex-direction: column; gap: 0.8rem; }
+      .card-wide .card-meta { flex-direction: row; align-items: flex-start; }
+    }
+
     .card-arrow {
       position: absolute;
       bottom: 1.2rem;
@@ -180,16 +248,20 @@
     .card-q1:hover .card-arrow { color: var(--accent1); }
     .card-q2:hover .card-arrow { color: var(--accent2); }
     .card-q3:hover .card-arrow { color: var(--accent3); }
+    .card-dp:hover .card-arrow { color: var(--accent5); }
+
+    /* wide card arrow always visible */
+    .card-wide .card-arrow { opacity: 0.2; position: static; margin-top: 0.8rem; display: inline-block; }
+    .card-wide:hover .card-arrow { opacity: 1; transform: translate(3px, -3px); }
 
     .footer {
-      margin-top: 2rem;
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
       color: var(--text-light);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.6s forwards;
+      animation: fadeUp 0.5s ease 0.65s forwards;
     }
 
     @keyframes fadeUp {
@@ -203,6 +275,8 @@
     <div class="badge">Industry 4.0 · NPTEL</div>
     <h1>Cheatsheet <em>Hub</em></h1>
     <p class="subtitle">// select the exam you're preparing for</p>
+
+    <div class="section-label">// cheatsheets &amp; quizzes</div>
 
     <div class="cards">
       <a href="./quiz1/index.html" class="card card-q1">
@@ -224,6 +298,22 @@
         <div class="card-title">Inventory Management &amp; Analytics</div>
         <p class="card-desc">EOQ, News Vendor, MDP, Q-Learning, Time Series, IIoT</p>
         <span class="card-arrow">↗</span>
+      </a>
+    </div>
+
+    <!-- NEW: DP question breakdown row -->
+    <div class="cards-bottom">
+      <a href="./dp-question/index.html" class="card card-dp card-wide">
+        <div class="card-body">
+          <div class="card-tag">Worked Problem</div>
+          <div class="card-title">Dynamic Programming — Production Planning</div>
+          <p class="card-desc">Full step-by-step backward recursion breakdown for the 4-month production scheduling problem. Every constraint explained, all valid x values shown, complete DP tables from month 4 back to month 1.</p>
+          <span class="card-arrow">↗</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-pill pill-teal">Backward recursion</span>
+          <span class="meta-pill pill-amber">All steps shown</span>
+        </div>
       </a>
     </div>
 

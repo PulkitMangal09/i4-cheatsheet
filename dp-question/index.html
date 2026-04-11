@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Programming — Production Planning Breakdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf8;
+      --surface: #ffffff;
+      --surface2: #f4f3ef;
+      --border: #e5e3dc;
+      --border-strong: #c9c6bc;
+      --text: #1a1916;
+      --text-muted: #6b6860;
+      --text-light: #9b9890;
+      --accent1: #1a3a5c;
+      --accent2: #c0430a;
+      --accent3: #2d6a4f;
+      --accent4: #5c3472;
+      --teal: #1D9E75;
+      --teal-light: #E1F5EE;
+      --teal-dark: #085041;
+      --red-light: #FCEBEB;
+      --red-dark: #791F1F;
+      --amber-light: #FAEEDA;
+      --amber-dark: #633806;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, #ccc9be 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.4;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── TOP NAV ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border-strong);
+      padding: 0.35rem 0.9rem;
+      border-radius: 2px;
+      transition: all 0.18s;
+    }
+    .back-btn:hover { background: var(--surface2); color: var(--accent1); border-color: var(--accent1); }
+    .back-btn .arrow { transition: transform 0.18s; }
+    .back-btn:hover .arrow { transform: translateX(-3px); }
+
+    .topbar-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .topbar-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+      padding: 0.25rem 0.7rem;
+      border-radius: 2px;
+      opacity: 0.8;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 1rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.1s forwards;
+    }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.8rem;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+    }
+
+    .hero h1 em { font-style: italic; color: var(--accent1); }
+
+    .hero-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-light);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+
+    /* problem statement box */
+    .problem-box {
+      background: var(--accent1);
+      color: #e8eef4;
+      border-radius: 4px;
+      padding: 1.4rem 1.8rem;
+      font-size: 0.82rem;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .problem-box::before {
+      content: '"';
+      position: absolute;
+      top: -0.5rem; left: 1rem;
+      font-family: 'DM Serif Display', serif;
+      font-size: 6rem;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+    }
+    .problem-box strong { color: #ffffff; font-weight: 600; }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    /* step block */
+    .step {
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.45s ease forwards;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .step-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .step h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+    }
+
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    /* cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.3rem 1.5rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 0.7rem;
+      color: var(--text);
+    }
+
+    .card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* two-col grid */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 0.9rem; }
+    @media(max-width:560px){ .two-col { grid-template-columns:1fr; } }
+
+    /* metric chips */
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.7rem; margin-bottom: 0.9rem; }
+    .metric {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+    }
+    .metric-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem; }
+    .metric-val { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--text); }
+    .metric-val.green { color: var(--teal-dark); }
+
+    /* formula box */
+    .formula {
+      background: var(--surface2);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 4px 4px 0;
+      padding: 1rem 1.3rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 2;
+      color: var(--text);
+      margin-bottom: 0.9rem;
+    }
+    .formula span { color: var(--text-muted); }
+
+    /* timeline row */
+    .timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.7rem; margin-bottom: 0.9rem; }
+    @media(max-width:480px){ .timeline { grid-template-columns: repeat(2,1fr); } }
+    .tbox {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.9rem;
+      text-align: center;
+      background: var(--surface);
+    }
+    .tbox.highlight { border-color: var(--teal); background: var(--teal-light); }
+    .tbox-head { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.35rem; }
+    .tbox-val { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); }
+    .tbox.highlight .tbox-val { color: var(--teal-dark); }
+    .tbox-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+    /* cost table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-bottom: 0.5rem; }
+    th {
+      background: var(--surface2);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 0.6rem 0.7rem;
+      text-align: center;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    td {
+      padding: 0.6rem 0.7rem;
+      text-align: center;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+    }
+    tr.opt td { background: var(--teal-light); color: var(--teal-dark); font-weight: 500; }
+    tr.sep td { border-top: 2px solid var(--border-strong); }
+
+    /* x badge pills */
+    .x-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.7rem 0 0.4rem; }
+    .xbadge {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 48px; height: 52px;
+      border-radius: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 1rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+    }
+    .xbadge small { font-size: 0.55rem; letter-spacing: 0; margin-top: 2px; font-weight: 400; }
+    .xbadge.valid { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal); }
+    .xbadge.invalid-low { background: var(--red-light); color: var(--red-dark); border-color: #E24B4A; }
+    .xbadge.invalid-high { background: var(--amber-light); color: var(--amber-dark); border-color: #BA7517; }
+    .badge-legend { display: flex; gap: 1rem; flex-wrap: wrap; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.8rem; }
+    .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 1px; margin-right: 4px; vertical-align: middle; }
+
+    /* section divider */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    /* constraint box */
+    .constraint-row { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
+    .constraint-row:last-child { border-bottom: none; }
+    .ctag { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .ctag-red { background: var(--red-light); color: var(--red-dark); }
+    .ctag-amber { background: var(--amber-light); color: var(--amber-dark); }
+
+    /* final answer card */
+    .answer-card {
+      background: var(--accent1);
+      border-radius: 4px;
+      padding: 1.8rem 2rem;
+      color: #e8eef4;
+      margin-bottom: 0.9rem;
+    }
+    .answer-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400; color: #fff; margin-bottom: 1rem; }
+    .answer-row { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.82rem; }
+    .answer-row:last-child { border-bottom: none; font-weight: 600; font-size: 0.9rem; }
+    .answer-row .val { font-family: 'DM Mono', monospace; color: #9FE1CB; }
+    .answer-row.total .val { color: #5DCAA5; font-size: 1.1rem; }
+
+    .note { font-size: 0.75rem; color: var(--text-muted); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; margin-top: 0.5rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <nav class="topbar">
+    <a href="../index.html" class="back-btn"><span class="arrow">←</span> Back to hub</a>
+    <span class="topbar-title">Industry 4.0 · NPTEL</span>
+    <span class="topbar-badge">Quiz 2</span>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">// Dynamic Programming · Backward Recursion</div>
+    <h1>Production Planning<br><em>Breakdown</em></h1>
+    <p class="hero-sub">// problem 1 · step-by-step with all constraints explained</p>
+
+    <div class="problem-box">
+      A company's demand over <strong>4 months</strong> is: Month 1 = <strong>1 unit</strong>, Month 2 = <strong>3 units</strong>, Month 3 = <strong>2 units</strong>, Month 4 = <strong>4 units</strong>.
+      Setup cost = <strong>$3</strong> (if producing anything). Variable cost = <strong>$1/unit</strong>. Holding cost = <strong>$0.50/unit</strong> left at end of month.
+      Max production = <strong>5 units/month</strong>. Max ending inventory = <strong>4 units</strong>. Starting inventory = <strong>0</strong>. Find the minimum cost production schedule.
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="content">
+
+    <!-- STEP 1 -->
+    <div class="step" style="animation-delay:0.15s">
+      <div class="step-header"><span class="step-num">Step 01</span><div class="step-line"></div></div>
+      <h2>Understand the cost structure</h2>
+      <p class="step-desc">// three types of costs — know each one cold</p>
+
+      <div class="card" style="border-left:3px solid var(--accent1)">
+        <h3>Setup cost — $3 (fixed per month you produce)</h3>
+        <p>Like switching the factory "on". Paid once if you produce <em>any</em> units, regardless of quantity. Produce 0 → pay $0. Produce even 1 → pay $3.</p>
+        <div class="metrics" style="margin-top:0.8rem">
+          <div class="metric"><div class="metric-label">Produce 0</div><div class="metric-val">$0</div></div>
+          <div class="metric"><div class="metric-label">Produce 1</div><div class="metric-val">$3</div></div>
+          <div class="metric"><div class="metric-label">Produce 5</div><div class="metric-val">$3</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--teal)">
+        <h3>Variable cost — $1 per unit produced</h3>
+        <p>Every unit costs $1 to make. Simple multiplication: produce x → pay $x.</p>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--accent2)">
+        <h3>Holding cost — $0.50 per unit remaining at month end</h3>
+        <p>Units not sold sit in the warehouse and cost $0.50 each. This discourages over-producing early.</p>
+        <div class="metrics" style="margin-top:0.8rem">
+          <div class="metric"><div class="metric-label">0 leftover</div><div class="metric-val">$0</div></div>
+          <div class="metric"><div class="metric-label">2 leftover</div><div class="metric-val">$1</div></div>
+          <div class="metric"><div class="metric-label">4 leftover</div><div class="metric-val">$2</div></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 2 -->
+    <div class="step" style="animation-delay:0.2s">
+      <div class="step-header"><span class="step-num">Step 02</span><div class="step-line"></div></div>
+      <h2>The inventory equation</h2>
+      <p class="step-desc">// one equation governs every month</p>
+
+      <div class="formula">
+        <strong>Ending inventory = Starting inventory + Units produced − Demand</strong><br>
+        <span>Rules: ending inv ≥ 0 (can't run out) &nbsp;AND&nbsp; ending inv ≤ 4 (warehouse limit)</span>
+      </div>
+
+      <div class="card">
+        <h3>Monthly cost formula</h3>
+        <div class="formula" style="margin-bottom:0">
+          <strong>Cost(x) = Setup(x) + $1 × x + $0.50 × ending inventory</strong><br>
+          <span>where Setup(x) = $3 if x &gt; 0, else $0</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 3 -->
+    <div class="step" style="animation-delay:0.25s">
+      <div class="step-header"><span class="step-num">Step 03</span><div class="step-line"></div></div>
+      <h2>What is backward recursion DP?</h2>
+      <p class="step-desc">// the core idea — solve from the end, work backwards</p>
+
+      <div class="card">
+        <h3>f<sub>t</sub>(I) — the value function</h3>
+        <p>f<sub>t</sub>(I) = the <em>minimum possible total cost from month t through month 4</em>, given starting inventory I at month t. Our goal is f<sub>1</sub>(0).</p>
+      </div>
+
+      <div class="formula">
+        <strong>f<sub>t</sub>(I) = min over all valid x of [ cost(x, I) + f<sub>t+1</sub>(I + x − demand<sub>t</sub>) ]</strong><br>
+        <span>Base case: f<sub>5</sub>(I) = 0 for all I &nbsp;(no costs after month 4)</span>
+      </div>
+
+      <div class="card">
+        <h3>Why valid x only?</h3>
+        <p style="margin-bottom:0.7rem">Not every x from 0–5 is legal. Both constraints must be satisfied simultaneously:</p>
+        <div class="constraint-row"><span>Must meet demand: I + x − demand ≥ 0 → x ≥ demand − I</span><span class="ctag ctag-red">floor</span></div>
+        <div class="constraint-row"><span>Warehouse limit: I + x − demand ≤ 4 → x ≤ 4 − I + demand</span><span class="ctag ctag-amber">ceiling</span></div>
+        <div class="constraint-row"><span>Machine limit: x ≤ 5</span><span class="ctag ctag-amber">ceiling</span></div>
+        <p style="margin-top:0.7rem; font-size:0.78rem; color:var(--text-muted)">Valid x = integers from max(0, demand − I) to min(5, 4 − I + demand)</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 4 — Month 4 -->
+    <div class="step" style="animation-delay:0.3s">
+      <div class="step-header"><span class="step-num">Step 04</span><div class="step-line"></div></div>
+      <h2>Solve month 4 — demand = 4</h2>
+      <p class="step-desc">// easiest stage — no future to worry about, f₅ = 0</p>
+
+      <div class="card">
+        <p style="margin-bottom:0.8rem">Since we want 0 leftover at end (no point carrying stock into a non-existent month 5), x = 4 − I exactly.</p>
+        <table>
+          <tr><th>Start inv (I)</th><th>Produce (x)</th><th>Setup</th><th>Variable</th><th>Holding</th><th>f₄(I)</th></tr>
+          <tr><td>0</td><td>4</td><td>$3</td><td>$4</td><td>$0</td><td><strong>$7</strong></td></tr>
+          <tr><td>1</td><td>3</td><td>$3</td><td>$3</td><td>$0</td><td><strong>$6</strong></td></tr>
+          <tr><td>2</td><td>2</td><td>$3</td><td>$2</td><td>$0</td><td><strong>$5</strong></td></tr>
+          <tr><td>3</td><td>1</td><td>$3</td><td>$1</td><td>$0</td><td><strong>$4</strong></td></tr>
+          <tr><td>4</td><td>0</td><td>$0</td><td>$0</td><td>$0</td><td><strong>$0</strong></td></tr>
+        </table>
+        <p class="note">Pattern: more inventory entering month 4 = cheaper. Having 4 already = produce nothing, pay nothing.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 5 — Valid x for Month 3 -->
+    <div class="step" style="animation-delay:0.35s">
+      <div class="step-header"><span class="step-num">Step 05</span><div class="step-line"></div></div>
+      <h2>Why only certain x values are tried — month 3 example</h2>
+      <p class="step-desc">// demand = 2 · valid x = max(0, 2−I) to min(5, 6−I)</p>
+
+      <div class="badge-legend">
+        <span><span class="legend-dot" style="background:var(--teal)"></span>valid x</span>
+        <span><span class="legend-dot" style="background:#E24B4A"></span>too low — can't meet demand</span>
+        <span><span class="legend-dot" style="background:#BA7517"></span>too high — warehouse overflow</span>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 0 &nbsp;→&nbsp; valid x: 2, 3, 4, 5</h3>
+        <p style="margin-bottom:0.5rem">Min x ≥ 2−0 = 2 &nbsp;|&nbsp; Max x ≤ min(5, 6−0) = 5</p>
+        <div class="x-row">
+          <div class="xbadge invalid-low">0<small>inv=−2</small></div>
+          <div class="xbadge invalid-low">1<small>inv=−1</small></div>
+          <div class="xbadge valid">2<small>inv=0</small></div>
+          <div class="xbadge valid">3<small>inv=1</small></div>
+          <div class="xbadge valid">4<small>inv=2</small></div>
+          <div class="xbadge valid">5<small>inv=3</small></div>
+        </div>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₄(end inv)</th><th>Total</th></tr>
+          <tr class="opt"><td>2</td><td>0</td><td>3+2+0 = $5</td><td>$7</td><td>$12 ✓ best</td></tr>
+          <tr><td>3</td><td>1</td><td>3+3+0.5 = $6.50</td><td>$6</td><td>$12.50</td></tr>
+          <tr><td>4</td><td>2</td><td>3+4+1 = $8</td><td>$5</td><td>$13</td></tr>
+          <tr><td>5</td><td>3</td><td>3+5+1.5 = $9.50</td><td>$4</td><td>$13.50</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 1 &nbsp;→&nbsp; valid x: 1, 2, 3, 4, 5</h3>
+        <p style="margin-bottom:0.5rem">Min x ≥ 2−1 = 1 &nbsp;|&nbsp; Max x ≤ min(5, 5) = 5</p>
+        <div class="x-row">
+          <div class="xbadge invalid-low">0<small>inv=−1</small></div>
+          <div class="xbadge valid">1<small>inv=0</small></div>
+          <div class="xbadge valid">2<small>inv=1</small></div>
+          <div class="xbadge valid">3<small>inv=2</small></div>
+          <div class="xbadge valid">4<small>inv=3</small></div>
+          <div class="xbadge valid">5<small>inv=4</small></div>
+        </div>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₄(end inv)</th><th>Total</th></tr>
+          <tr class="opt"><td>1</td><td>0</td><td>3+1+0 = $4</td><td>$7</td><td>$11 ✓ best</td></tr>
+          <tr><td>2</td><td>1</td><td>3+2+0.5 = $5.50</td><td>$6</td><td>$11.50</td></tr>
+          <tr><td>3</td><td>2</td><td>3+3+1 = $7</td><td>$5</td><td>$12</td></tr>
+          <tr><td>4</td><td>3</td><td>3+4+1.5 = $8.50</td><td>$4</td><td>$12.50</td></tr>
+          <tr><td>5</td><td>4</td><td>3+5+2 = $10</td><td>$0</td><td>$10</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 2 &nbsp;→&nbsp; valid x: 0, 1, 2, 3, 4</h3>
+        <p style="margin-bottom:0.5rem">Min x ≥ 0 &nbsp;|&nbsp; Max x ≤ min(5, 4) = 4 &nbsp;<em>(warehouse is the binding limit!)</em></p>
+        <div class="x-row">
+          <div class="xbadge valid">0<small>inv=0</small></div>
+          <div class="xbadge valid">1<small>inv=1</small></div>
+          <div class="xbadge valid">2<small>inv=2</small></div>
+          <div class="xbadge valid">3<small>inv=3</small></div>
+          <div class="xbadge valid">4<small>inv=4</small></div>
+          <div class="xbadge invalid-high">5<small>inv=5!</small></div>
+        </div>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₄(end inv)</th><th>Total</th></tr>
+          <tr class="opt"><td>0</td><td>0</td><td>$0</td><td>$7</td><td>$7 ✓ best</td></tr>
+          <tr><td>1</td><td>1</td><td>3+1+0.5 = $4.50</td><td>$6</td><td>$10.50</td></tr>
+          <tr><td>2</td><td>2</td><td>3+2+1 = $6</td><td>$5</td><td>$11</td></tr>
+          <tr><td>3</td><td>3</td><td>3+3+1.5 = $7.50</td><td>$4</td><td>$11.50</td></tr>
+          <tr><td>4</td><td>4</td><td>3+4+2 = $9</td><td>$0</td><td>$9</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 3 &nbsp;→&nbsp; valid x: 0, 1, 2, 3</h3>
+        <p style="margin-bottom:0.5rem">Min x ≥ 0 &nbsp;|&nbsp; Max x ≤ min(5, 3) = 3 &nbsp;<em>(warehouse tightens further)</em></p>
+        <div class="x-row">
+          <div class="xbadge valid">0<small>inv=1</small></div>
+          <div class="xbadge valid">1<small>inv=2</small></div>
+          <div class="xbadge valid">2<small>inv=3</small></div>
+          <div class="xbadge valid">3<small>inv=4</small></div>
+          <div class="xbadge invalid-high">4<small>inv=5!</small></div>
+          <div class="xbadge invalid-high">5<small>inv=6!</small></div>
+        </div>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₄(end inv)</th><th>Total</th></tr>
+          <tr class="opt"><td>0</td><td>1</td><td>$0.50</td><td>$6</td><td>$6.50 ✓ best</td></tr>
+          <tr><td>1</td><td>2</td><td>3+1+1 = $5</td><td>$5</td><td>$10</td></tr>
+          <tr><td>2</td><td>3</td><td>3+2+1.5 = $6.50</td><td>$4</td><td>$10.50</td></tr>
+          <tr><td>3</td><td>4</td><td>3+3+2 = $8</td><td>$0</td><td>$8</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 4 &nbsp;→&nbsp; valid x: 0, 1, 2 only!</h3>
+        <p style="margin-bottom:0.5rem">Min x ≥ 0 &nbsp;|&nbsp; Max x ≤ min(5, 2) = 2 &nbsp;<em>(warehouse nearly full already)</em></p>
+        <div class="x-row">
+          <div class="xbadge valid">0<small>inv=2</small></div>
+          <div class="xbadge valid">1<small>inv=3</small></div>
+          <div class="xbadge valid">2<small>inv=4</small></div>
+          <div class="xbadge invalid-high">3<small>inv=5!</small></div>
+          <div class="xbadge invalid-high">4<small>inv=6!</small></div>
+          <div class="xbadge invalid-high">5<small>inv=7!</small></div>
+        </div>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₄(end inv)</th><th>Total</th></tr>
+          <tr class="opt"><td>0</td><td>2</td><td>$1</td><td>$5</td><td>$6 ✓ best</td></tr>
+          <tr><td>1</td><td>3</td><td>3+1+1.5 = $5.50</td><td>$4</td><td>$9.50</td></tr>
+          <tr><td>2</td><td>4</td><td>3+2+2 = $7</td><td>$0</td><td>$7</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Month 3 summary</h3>
+        <table>
+          <tr><th>Start I</th><th>Min x</th><th>Max x</th><th>Valid range</th><th>Optimal x*</th><th>f₃(I)</th></tr>
+          <tr class="opt"><td>0</td><td>2</td><td>5</td><td>2,3,4,5</td><td>2</td><td>$12</td></tr>
+          <tr class="opt"><td>1</td><td>1</td><td>5</td><td>1,2,3,4,5</td><td>1</td><td>$11</td></tr>
+          <tr class="opt"><td>2</td><td>0</td><td>4</td><td>0,1,2,3,4</td><td>0</td><td>$7</td></tr>
+          <tr class="opt"><td>3</td><td>0</td><td>3</td><td>0,1,2,3</td><td>0</td><td>$6.50</td></tr>
+          <tr class="opt"><td>4</td><td>0</td><td>2</td><td>0,1,2</td><td>0</td><td>$6</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 6 — Month 2 -->
+    <div class="step" style="animation-delay:0.4s">
+      <div class="step-header"><span class="step-num">Step 06</span><div class="step-line"></div></div>
+      <h2>Solve month 2 — demand = 3</h2>
+      <p class="step-desc">// using f₃ results · valid x = max(0, 3−I) to min(5, 7−I)</p>
+
+      <div class="card">
+        <h3>Start I = 0 &nbsp;→&nbsp; valid x: 3, 4, 5</h3>
+        <p style="margin-bottom:0.5rem">Min x ≥ 3 &nbsp;|&nbsp; Max x ≤ min(5, 7) = 5</p>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₃(end)</th><th>Total</th></tr>
+          <tr><td>3</td><td>0</td><td>3+3+0 = $6</td><td>$12</td><td>$18</td></tr>
+          <tr><td>4</td><td>1</td><td>3+4+0.5 = $7.50</td><td>$11</td><td>$18.50</td></tr>
+          <tr class="opt"><td>5</td><td>2</td><td>3+5+1 = $9</td><td>$7</td><td>$16 ✓</td></tr>
+        </table>
+        <p class="note">x=5 wins: producing extra 2 units costs $3 more now but saves $5 in future (f₃ drops from $12 to $7). Net saving = $2.</p>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 1 &nbsp;→&nbsp; valid x: 2, 3, 4, 5</h3>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₃(end)</th><th>Total</th></tr>
+          <tr><td>2</td><td>0</td><td>3+2+0 = $5</td><td>$12</td><td>$17</td></tr>
+          <tr><td>3</td><td>1</td><td>3+3+0.5 = $6.50</td><td>$11</td><td>$17.50</td></tr>
+          <tr class="opt"><td>4</td><td>2</td><td>3+4+1 = $8</td><td>$7</td><td>$15 ✓</td></tr>
+          <tr><td>5</td><td>3</td><td>3+5+1.5 = $9.50</td><td>$6.50</td><td>$16</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 2 &nbsp;→&nbsp; valid x: 1, 2, 3, 4, 5</h3>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₃(end)</th><th>Total</th></tr>
+          <tr><td>1</td><td>0</td><td>3+1+0 = $4</td><td>$12</td><td>$16</td></tr>
+          <tr><td>2</td><td>1</td><td>3+2+0.5 = $5.50</td><td>$11</td><td>$16.50</td></tr>
+          <tr class="opt"><td>3</td><td>2</td><td>3+3+1 = $7</td><td>$7</td><td>$14 ✓</td></tr>
+          <tr><td>4</td><td>3</td><td>3+4+1.5 = $8.50</td><td>$6.50</td><td>$15</td></tr>
+          <tr><td>5</td><td>4</td><td>3+5+2 = $10</td><td>$6</td><td>$16</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 3 &nbsp;→&nbsp; valid x: 0, 1, 2, 3, 4</h3>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₃(end)</th><th>Total</th></tr>
+          <tr class="opt"><td>0</td><td>0</td><td>$0</td><td>$12</td><td>$12 ✓</td></tr>
+          <tr><td>1</td><td>1</td><td>3+1+0.5 = $4.50</td><td>$11</td><td>$15.50</td></tr>
+          <tr><td>2</td><td>2</td><td>3+2+1 = $6</td><td>$7</td><td>$13</td></tr>
+          <tr><td>3</td><td>3</td><td>3+3+1.5 = $7.50</td><td>$6.50</td><td>$14</td></tr>
+          <tr><td>4</td><td>4</td><td>3+4+2 = $9</td><td>$6</td><td>$15</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Start I = 4 &nbsp;→&nbsp; valid x: 0, 1, 2, 3</h3>
+        <p style="margin-bottom:0.5rem">Max x ≤ min(5, 3) = 3 (warehouse caps at 4 units ending)</p>
+        <table>
+          <tr><th>x</th><th>End inv</th><th>Month cost</th><th>f₃(end)</th><th>Total</th></tr>
+          <tr class="opt"><td>0</td><td>1</td><td>$0.50</td><td>$11</td><td>$11.50 ✓</td></tr>
+          <tr><td>1</td><td>2</td><td>3+1+1 = $5</td><td>$7</td><td>$12</td></tr>
+          <tr><td>2</td><td>3</td><td>3+2+1.5 = $6.50</td><td>$6.50</td><td>$13</td></tr>
+          <tr><td>3</td><td>4</td><td>3+3+2 = $8</td><td>$6</td><td>$14</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Month 2 summary</h3>
+        <table>
+          <tr><th>Start I</th><th>Optimal x*</th><th>f₂(I)</th></tr>
+          <tr class="opt"><td>0</td><td>5</td><td>$16</td></tr>
+          <tr class="opt"><td>1</td><td>4</td><td>$15</td></tr>
+          <tr class="opt"><td>2</td><td>3</td><td>$14</td></tr>
+          <tr class="opt"><td>3</td><td>0</td><td>$12</td></tr>
+          <tr class="opt"><td>4</td><td>0</td><td>$11.50</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 7 — Month 1 -->
+    <div class="step" style="animation-delay:0.45s">
+      <div class="step-header"><span class="step-num">Step 07</span><div class="step-line"></div></div>
+      <h2>Solve month 1 — demand = 1, start = 0</h2>
+      <p class="step-desc">// this gives us the final answer · valid x: 1 to 5</p>
+
+      <div class="card">
+        <p style="margin-bottom:0.8rem">Min x ≥ 1 (must meet demand). Max x ≤ min(5, 5) = 5.</p>
+        <table>
+          <tr><th>x</th><th>End inv (0+x−1)</th><th>Month 1 cost</th><th>f₂(end inv)</th><th>Total</th></tr>
+          <tr class="opt"><td>1</td><td>0</td><td>3+1+0 = $4</td><td>$16</td><td>$20 ✓ minimum</td></tr>
+          <tr><td>2</td><td>1</td><td>3+2+0.5 = $5.50</td><td>$15</td><td>$20.50</td></tr>
+          <tr><td>3</td><td>2</td><td>3+3+1 = $7</td><td>$14</td><td>$21</td></tr>
+          <tr><td>4</td><td>3</td><td>3+4+1.5 = $8.50</td><td>$12</td><td>$20.50</td></tr>
+          <tr><td>5</td><td>4</td><td>3+5+2 = $10</td><td>$11.50</td><td>$21.50</td></tr>
+        </table>
+        <p class="note">Optimal: produce exactly 1 unit in month 1. f₁(0) = $20.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 8 — Trace Forward -->
+    <div class="step" style="animation-delay:0.5s">
+      <div class="step-header"><span class="step-num">Step 08</span><div class="step-line"></div></div>
+      <h2>Trace the optimal path forward</h2>
+      <p class="step-desc">// follow the best decision at each month using stored x* values</p>
+
+      <div class="timeline">
+        <div class="tbox highlight">
+          <div class="tbox-head">Month 1</div>
+          <div class="tbox-val">Produce 1</div>
+          <div class="tbox-sub">Start: 0 → End: 0</div>
+        </div>
+        <div class="tbox highlight">
+          <div class="tbox-head">Month 2</div>
+          <div class="tbox-val">Produce 5</div>
+          <div class="tbox-sub">Start: 0 → End: 2</div>
+        </div>
+        <div class="tbox highlight">
+          <div class="tbox-head">Month 3</div>
+          <div class="tbox-val">Produce 0</div>
+          <div class="tbox-sub">Start: 2 → End: 0</div>
+        </div>
+        <div class="tbox highlight">
+          <div class="tbox-head">Month 4</div>
+          <div class="tbox-val">Produce 4</div>
+          <div class="tbox-sub">Start: 0 → End: 0</div>
+        </div>
+      </div>
+
+      <div class="answer-card">
+        <h3>Cost breakdown</h3>
+        <div class="answer-row">
+          <span>Month 1: setup $3 + variable $1×1 + holding $0.50×0</span>
+          <span class="val">$4.00</span>
+        </div>
+        <div class="answer-row">
+          <span>Month 2: setup $3 + variable $1×5 + holding $0.50×2</span>
+          <span class="val">$9.00</span>
+        </div>
+        <div class="answer-row">
+          <span>Month 3: no production, no leftover</span>
+          <span class="val">$0.00</span>
+        </div>
+        <div class="answer-row">
+          <span>Month 4: setup $3 + variable $1×4 + holding $0.50×0</span>
+          <span class="val">$7.00</span>
+        </div>
+        <div class="answer-row total">
+          <span>Total minimum cost</span>
+          <span class="val">$20.00</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- FINAL ANSWERS -->
+    <div class="step" style="animation-delay:0.55s">
+      <div class="step-header"><span class="step-num">Answers</span><div class="step-line"></div></div>
+      <h2>The five exam questions answered</h2>
+      <p class="step-desc">// direct answers from the optimal schedule above</p>
+
+      <div class="metrics" style="grid-template-columns: repeat(auto-fit, minmax(150px,1fr))">
+        <div class="metric">
+          <div class="metric-label">Total optimal cost</div>
+          <div class="metric-val green">$20</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Inv. start of month 2</div>
+          <div class="metric-val">0 units</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Inv. end of month 2</div>
+          <div class="metric-val">2 units</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Production month 3</div>
+          <div class="metric-val">0 units</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Production month 4</div>
+          <div class="metric-val">4 units</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.animationPlayState = 'running';
+        }
+      });
+    }, { threshold: 0.08 });
+    steps.forEach(s => {
+      s.style.animationPlayState = 'paused';
+      obs.observe(s);
+    });
+  </script>
+</body>
+</html>
